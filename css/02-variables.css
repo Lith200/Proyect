@@ -1,56 +1,82 @@
 /* 02-variables.css — Design tokens cósmicos */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
 :root {
-    /* Fondo espacial */
+    /* ── Fondo espacial ── */
     --space-black: #0b0b1a;
     --space-midnight: #11112e;
     --nebula-purple: #2d124d;
     --nebula-glow: rgba(45, 18, 77, 0.55);
     --cosmic-blue: #1a1a4e;
 
-    /* Acentos románticos en el cosmos */
+    /* Degradado cósmico unificado — usado por body y pantallas que lo necesiten */
+    --cosmic-bg:
+        radial-gradient(ellipse 120% 80% at 50% 0%, var(--nebula-purple) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 80% 90%, var(--cosmic-blue-glow) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 10% 70%, rgba(45, 18, 77, 0.35) 0%, transparent 45%),
+        linear-gradient(175deg, var(--space-black) 0%, var(--space-midnight) 45%, #1a0a2e 100%);
+
+    /* ── Acentos románticos en el cosmos ── */
     --primary-love: #c77dff;
     --primary-dark: #e0aaff;
     --hover-love: #d4a5ff;
     --accent-gold: #ffd6ff;
     --accent-rose: #ff6b9d;
 
-    /* Tipografía */
+    /* ── Tipografía ── */
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* Serif elegante reservada para títulos — le da carácter "premium" sin perder legibilidad */
+    --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --text-main: rgba(240, 235, 255, 0.92);
     --text-muted: rgba(200, 190, 230, 0.75);
     --text-dark: rgba(255, 255, 255, 0.88);
 
-    /* Visores de nave (glass) */
+    /* Degradado cálido de 2 tonos para títulos — restringido a dorado suave → rosa,
+       más sobrio que un arcoíris de 4 colores */
+    --text-gradient-warm: linear-gradient(120deg, #ffe9c7 0%, var(--primary-dark) 55%, var(--accent-rose) 100%);
+
+    /* Brillo estelar para títulos — sutil, imita luz difusa de estrella lejana */
+    --text-shadow-star:
+        0 0 6px rgba(255, 255, 255, 0.3),
+        0 0 16px rgba(199, 125, 255, 0.18);
+
+    /* ── Visores de nave (glass) ── */
     --glass-bg: rgba(255, 255, 255, 0.06);
     --glass-bg-soft: rgba(255, 255, 255, 0.04);
     --glass-bg-strong: rgba(17, 17, 46, 0.72);
     --glass-track-bg: rgba(255, 255, 255, 0.06);
     --glass-border: rgba(255, 255, 255, 0.14);
     --glass-highlight: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(10px);
     --space-glass: rgba(11, 11, 26, 0.6);
     --cosmic-blue-glow: rgba(26, 26, 78, 0.6);
 
-
-    /* Sombras y profundidad */
+    /* ── Sombras y profundidad ── */
     --shadow-cosmic: rgba(45, 18, 77, 0.45);
     --shadow-glow: rgba(199, 125, 255, 0.35);
     --star-glow: rgba(255, 255, 255, 0.5);
 
-    /* Planetas */
+    /* ── Planetas y lunas (gradientes esféricos con luz lateral) ── */
     --planet-purple: radial-gradient(circle at 32% 28%, #9b6fd4 0%, #5a2d82 38%, #2d124d 68%, #0b0b1a 100%);
     --planet-pink: radial-gradient(circle at 35% 30%, #ff9ecf 0%, #c44d8a 42%, #5a1a4a 72%, #0b0b1a 100%);
     --planet-blue: radial-gradient(circle at 30% 25%, #7eb8ff 0%, #3a5a9e 40%, #11112e 70%, #0b0b1a 100%);
     --moon-surface: radial-gradient(circle at 38% 32%, #e8e4f0 0%, #a89bb8 45%, #5a5068 100%);
 
-    /* Motion */
+    /* Tamaños base de cuerpos celestes (referenciados por 03-global.css y 05-universe.css) */
+    --planet-size-card: 52px;
+    --planet-size-screen: 44px;
+    --moon-size-card: 14px;
+    --moon-size-screen: 10px;
+
+    /* ── Motion ── */
     --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     --transition-tap: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-orbit: linear;
     --float-duration: 5s;
     --orbit-duration: 14s;
     --orbit-duration-fast: 3s;
 
-    /* Mobile-first spacing */
+    /* ── Mobile-first spacing ── */
     --card-radius: 24px;
     --card-padding: 28px 20px;
     --card-max-width: 100%;

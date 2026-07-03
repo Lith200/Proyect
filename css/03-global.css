@@ -158,11 +158,12 @@ body {
     display: none !important;
 }
 
-/* ── Tipografía estelar (títulos principales) — imita el brillo de una estrella cercana ── */
+/* ── Tipografía estelar (títulos principales) — serif elegante + brillo sutil ── */
 .title,
 .section-title,
 .game-title,
 .final-title,
 .proposal-question {
+    font-family: var(--font-display);
     text-shadow: var(--text-shadow-star);
 }

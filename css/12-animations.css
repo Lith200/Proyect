@@ -74,30 +74,32 @@
 }
 
 /* ══════════════════════════════════════
-   INTRO
+   INTRO — estilo "hero" (tarjeta flotante inclinada + botón vívido)
    ══════════════════════════════════════ */
 
-/* Pulso del botón intro */
+/* Pulso del botón intro — un solo tono de acento, respiración discreta */
 @keyframes simplePulse {
     0%, 100% {
         transform: scale(1);
         box-shadow: 0 4px 20px var(--shadow-glow);
     }
     50% {
-        transform: scale(1.03);
-        box-shadow: 0 8px 32px rgba(199, 125, 255, 0.55);
+        transform: scale(1.02);
+        box-shadow: 0 8px 28px rgba(199, 125, 255, 0.45);
     }
 }
 
-/* Avatar intro — rotación cósmica */
-@keyframes spinSlow {
-    from { transform: rotate3d(0, 1, 0, 0deg); }
-    to { transform: rotate3d(0, 1, 0, 360deg); }
+/* Visor principal del avatar: flotación calmada con una inclinación mínima —
+   elegancia antes que espectáculo */
+@keyframes heroCardTilt {
+    0%, 100% { transform: rotate(-2deg) translateY(0); }
+    50% { transform: rotate(0deg) translateY(-8px); }
 }
 
-.avatar-container {
-    animation: spinSlow 24s linear infinite;
-    will-change: transform;
+/* Halo difuminado detrás del visor: respira suave en opacidad y escala */
+@keyframes heroGlowPulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.08); }
 }
 
 /* ══════════════════════════════════════

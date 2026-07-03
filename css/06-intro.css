@@ -1,30 +1,69 @@
-/* 06-intro.css — Pantalla de introducción */
+/* 06-intro.css — Pantalla de introducción / "hero" */
+
+/* ── Medallón de cristal: círculo limpio con halo suave, sin elementos duplicados ── */
 .avatar-container {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    display: inline-block;
-    filter: drop-shadow(0 0 12px rgba(255, 214, 255, 0.4));
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 24px;
+    font-size: 2.4rem;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.16),
+        0 12px 32px rgba(45, 18, 77, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: heroCardTilt 7s ease-in-out infinite;
+    will-change: transform;
 }
 
+/* Halo difuminado detrás del medallón — un solo tono, sutil */
+.avatar-container::before {
+    content: '';
+    position: absolute;
+    inset: -28%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(199, 125, 255, 0.32) 0%, transparent 70%);
+    filter: blur(16px);
+    animation: heroGlowPulse 4.5s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+/* ── Título hero: serif elegante con degradado cálido contenido a 2 tonos ── */
 .title {
-    font-size: 1.65rem;
+    font-size: 1.7rem;
+    font-weight: 700;
     color: var(--primary-dark);
-    margin-bottom: 14px;
-    line-height: 1.35;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    background: var(--text-gradient-warm);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
 }
 
 .subtitle {
     font-size: 0.95rem;
     color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 22px;
+    line-height: 1.7;
+    letter-spacing: 0.005em;
+    margin-bottom: 26px;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* ── Botón hero: presencia contenida, pulso discreto ── */
 .pulse-btn {
-    animation: simplePulse 2.5s infinite;
+    padding: 15px 32px;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    animation: simplePulse 3s ease-in-out infinite;
     will-change: transform;
 }
 
@@ -36,12 +75,13 @@
    768px coincide con el umbral "isMobile" usado en los archivos JS del universo. */
 @media (min-width: 768px) {
     .avatar-container {
-        font-size: 3.6rem;
-        margin-bottom: 20px;
+        width: 116px;
+        height: 116px;
+        font-size: 2.9rem;
     }
 
     .title {
-        font-size: 2.1rem;
+        font-size: 2.3rem;
     }
 
     .subtitle {
@@ -51,8 +91,13 @@
         margin-right: auto;
     }
 
+    .pulse-btn {
+        padding: 17px 38px;
+        font-size: 1.08rem;
+    }
+
     /* En desktop hay hover real: reforzamos el pulso al pasar el mouse, sin depender de él */
     .pulse-btn:hover {
-        animation-duration: 1.6s;
+        animation-duration: 1.8s;
     }
 }
