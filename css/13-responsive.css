@@ -1,0 +1,193 @@
+/* 13-responsive.css — Progresión mobile-first: móvil pequeño → móvil estándar → tablet → escritorio */
+
+/* ══════════════════════════════════════
+   MÓVIL MUY PEQUEÑO (< 360px)
+   ══════════════════════════════════════ */
+@media (max-width: 359px) {
+    .title {
+        font-size: 1.4rem;
+    }
+
+    .proposal-question {
+        font-size: 1.25rem;
+    }
+
+    .btn,
+    .btn-choice {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    .pulsing-heart {
+        font-size: 3.5rem;
+    }
+}
+
+/* ══════════════════════════════════════
+   MÓVIL ESTÁNDAR (≤ 480px)
+   ══════════════════════════════════════ */
+@media (max-width: 480px) {
+    .screen {
+        padding: 12px;
+        align-items: flex-start;
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+
+    .card {
+        padding: 24px 18px;
+        margin: auto 0;
+    }
+
+    body::before {
+        width: 80px;
+        height: 80px;
+        top: 4%;
+        right: -16px;
+    }
+
+    body::after {
+        width: 50px;
+        height: 50px;
+        bottom: 10%;
+    }
+
+    .screen.active::before {
+        width: 36px;
+        height: 36px;
+        top: 8%;
+        left: 4%;
+    }
+
+    .card::before {
+        width: 40px;
+        height: 40px;
+    }
+
+    .timeline-container::after {
+        left: 12px;
+    }
+
+    .timeline-item {
+        padding-left: 40px;
+    }
+
+    .timeline-item::after {
+        left: 3px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .letter-box {
+        max-height: 240px;
+    }
+}
+
+/* ══════════════════════════════════════
+   TABLET (≥ 481px): más aire, botones en fila
+   ══════════════════════════════════════ */
+@media (min-width: 481px) {
+    :root {
+        --card-max-width: 420px;
+        --card-padding: 32px 28px;
+    }
+
+    .screen {
+        align-items: center;
+    }
+
+    .proposal-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .btn-choice {
+        flex: 0 1 auto;
+    }
+}
+
+/* ══════════════════════════════════════
+   ESCRITORIO (≥ 768px): mismo umbral que usan
+   05-stars.js / 06-particles.js para "isMobile".
+   La tarjeta crece para aprovechar el espacio horizontal
+   (necesario para la timeline alternada de 08-timeline.css).
+   ══════════════════════════════════════ */
+@media (min-width: 768px) {
+    :root {
+        --card-max-width: 640px;
+        --card-padding: 40px 44px;
+    }
+
+    /* La carta y el timeline se benefician de un poco más de aire lateral */
+    .long-card,
+    .timeline-card {
+        max-width: 640px;
+    }
+
+    /* Los planetas decorativos de fondo pueden ser un poco más grandes sin invadir contenido */
+    body::before {
+        width: 140px;
+        height: 140px;
+    }
+
+    body::after {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+/* ══════════════════════════════════════
+   LANDSCAPE MÓVIL: compactar verticalmente
+   ══════════════════════════════════════ */
+@media (max-height: 500px) and (orientation: landscape) {
+    .screen {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .card {
+        animation: none;
+        margin: 8px 0;
+    }
+
+    .pulsing-heart {
+        font-size: 3rem;
+        margin-bottom: 12px;
+    }
+
+    #game-canvas {
+        height: 180px;
+    }
+
+    .letter-box {
+        min-height: 120px;
+        max-height: 160px;
+    }
+}
+
+/* ══════════════════════════════════════
+   ACCESIBILIDAD Y DISPOSITIVO
+   ══════════════════════════════════════ */
+
+/* Preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .card {
+        animation: none;
+    }
+}
+
+/* Safe areas para notch / barra de gestos */
+@supports (padding: env(safe-area-inset-top)) {
+    .screen {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+    }
+}

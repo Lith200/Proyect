@@ -1,0 +1,82 @@
+/* 07-story.css — Carta mecanografiada */
+.long-card {
+    max-width: 100%;
+}
+
+.card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.section-title {
+    font-size: 1.45rem;
+    color: var(--primary-dark);
+    margin-bottom: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.letter-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 0.5px solid var(--glass-border);
+    border-left: 2px solid var(--primary-love);
+    padding: 20px;
+    border-radius: 16px;
+    text-align: left;
+    min-height: 200px;
+    max-height: 280px;
+    overflow-y: auto;
+    margin-bottom: 22px;
+    box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    -webkit-overflow-scrolling: touch;
+}
+
+.typewriter-container {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-dark);
+    white-space: pre-wrap;
+}
+
+.letter-box::-webkit-scrollbar {
+    width: 4px;
+}
+
+.letter-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.letter-box::-webkit-scrollbar-thumb {
+    background-color: rgba(199, 125, 255, 0.4);
+    border-radius: 10px;
+}
+
+/* ── Escritorio / pantallas grandes ── */
+@media (min-width: 768px) {
+    .card-icon {
+        font-size: 3.2rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .letter-box {
+        min-height: 260px;
+        max-height: 380px;
+        padding: 26px 28px;
+    }
+
+    .typewriter-container {
+        font-size: 1.05rem;
+        line-height: 1.85;
+    }
+
+    /* Scrollbar un poco más gruesa: con mouse es más fácil de agarrar que con el dedo */
+    .letter-box::-webkit-scrollbar {
+        width: 6px;
+    }
+}

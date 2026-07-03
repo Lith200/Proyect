@@ -1,0 +1,55 @@
+/* 04-loading.css — Pantalla de carga cósmica */
+#screen-loading {
+    background: transparent;
+    z-index: 100;
+}
+
+.loader-content {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    padding: 32px 24px;
+    background: var(--glass-bg);
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: 0 8px 32px var(--shadow-cosmic);
+    animation: zeroGravityFloat var(--float-duration) ease-in-out infinite;
+    will-change: transform;
+}
+
+.pulsing-heart {
+    font-size: 4.5rem;
+    animation: heartBeatLoading 1.2s infinite ease-in-out;
+    margin-bottom: 20px;
+    display: inline-block;
+    will-change: transform;
+}
+
+.loading-bar-container {
+    width: min(240px, 80vw);
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px auto;
+    border: 0.5px solid var(--glass-border);
+}
+
+.loading-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-love), var(--accent-rose), var(--accent-gold));
+    border-radius: 20px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px var(--shadow-glow);
+}
+
+.loading-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    min-height: 20px;
+    line-height: 1.5;
+}

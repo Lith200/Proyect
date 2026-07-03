@@ -1,0 +1,153 @@
+/* 10-proposal.css — Propuesta final */
+.final-card {
+    max-width: 100%;
+}
+
+.heart-crown {
+    font-size: 3rem;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 14px rgba(255, 107, 157, 0.5));
+}
+
+.final-title {
+    font-size: 1.55rem;
+    color: var(--primary-dark);
+    margin-bottom: 14px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.final-paragraph {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-dark);
+    margin-bottom: 22px;
+}
+
+.cute-kitty-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px auto;
+    position: relative;
+    width: 110px;
+    height: 90px;
+}
+
+.kitty-avatar {
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.kitty-rose {
+    font-size: 2rem;
+    position: absolute;
+    bottom: 6px;
+    right: -10px;
+    transform: rotate(-10deg);
+}
+
+.proposal-question {
+    font-size: 1.45rem;
+    color: var(--primary-dark);
+    margin: 22px 0;
+    line-height: 1.35;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.proposal-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 14px;
+    min-height: auto;
+    position: relative;
+    width: 100%;
+}
+
+.btn-choice {
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-tap);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    will-change: transform;
+}
+
+.btn-choice.yes {
+    background: linear-gradient(135deg, var(--accent-rose) 0%, #c44d8a 100%);
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(255, 107, 157, 0.45);
+}
+
+.btn-choice.yes:active {
+    transform: scale(0.96);
+    box-shadow: 0 3px 16px rgba(255, 107, 157, 0.6);
+}
+
+.btn-choice.no {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 50;
+}
+
+.btn-choice.no:active {
+    transform: scale(0.94);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Escritorio / pantallas grandes ── */
+@media (min-width: 768px) {
+    .heart-crown {
+        font-size: 3.6rem;
+    }
+
+    .final-title {
+        font-size: 1.9rem;
+    }
+
+    .final-paragraph {
+        font-size: 1.05rem;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cute-kitty-box {
+        width: 130px;
+        height: 100px;
+    }
+
+    .kitty-avatar {
+        font-size: 4.6rem;
+    }
+
+    .proposal-question {
+        font-size: 1.75rem;
+    }
+
+    /* Con mouse hay hover real: el botón "Sí" debe reaccionar antes del clic.
+       11-proposal.js ya mueve el botón "No" con mouseenter — esto solo viste ese comportamiento. */
+    .btn-choice.yes:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 10px 30px rgba(255, 107, 157, 0.55);
+    }
+
+    .btn-choice.no:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-choice {
+        padding: 16px 32px;
+        font-size: 1.05rem;
+    }
+}

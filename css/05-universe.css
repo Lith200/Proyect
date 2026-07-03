@@ -1,0 +1,181 @@
+/* 05-universe.css — Cielo estrellado, planetas y lunas del cosmos */
+
+/* ── Capa de estrellas finas (1px) ── */
+html::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+        8vw 12vh 0 0 rgba(255, 255, 255, 0.35),
+        18vw 6vh 0 0 rgba(255, 255, 255, 0.55),
+        28vw 22vh 0 0 rgba(255, 255, 255, 0.25),
+        38vw 14vh 0 0 rgba(255, 255, 255, 0.45),
+        48vw 8vh 0 0 rgba(255, 255, 255, 0.3),
+        58vw 18vh 0 0 rgba(255, 255, 255, 0.5),
+        68vw 10vh 0 0 rgba(255, 255, 255, 0.4),
+        78vw 24vh 0 0 rgba(255, 255, 255, 0.28),
+        88vw 16vh 0 0 rgba(255, 255, 255, 0.42),
+        12vw 32vh 0 0 rgba(255, 255, 255, 0.38),
+        22vw 38vh 0 0 rgba(255, 255, 255, 0.22),
+        32vw 44vh 0 0 rgba(255, 255, 255, 0.48),
+        42vw 36vh 0 0 rgba(255, 255, 255, 0.32),
+        52vw 42vh 0 0 rgba(255, 255, 255, 0.55),
+        62vw 34vh 0 0 rgba(255, 255, 255, 0.26),
+        72vw 48vh 0 0 rgba(255, 255, 255, 0.44),
+        82vw 40vh 0 0 rgba(255, 255, 255, 0.36),
+        92vw 52vh 0 0 rgba(255, 255, 255, 0.3),
+        6vw 58vh 0 0 rgba(255, 255, 255, 0.42),
+        16vw 64vh 0 0 rgba(255, 255, 255, 0.28),
+        26vw 56vh 0 0 rgba(255, 255, 255, 0.5),
+        36vw 68vh 0 0 rgba(255, 255, 255, 0.34),
+        46vw 62vh 0 0 rgba(255, 255, 255, 0.24),
+        56vw 72vh 0 0 rgba(255, 255, 255, 0.46),
+        66vw 58vh 0 0 rgba(255, 255, 255, 0.38),
+        76vw 66vh 0 0 rgba(255, 255, 255, 0.3),
+        86vw 74vh 0 0 rgba(255, 255, 255, 0.52),
+        10vw 82vh 0 0 rgba(255, 255, 255, 0.32),
+        20vw 78vh 0 0 rgba(255, 255, 255, 0.44),
+        30vw 88vh 0 0 rgba(255, 255, 255, 0.26),
+        40vw 84vh 0 0 rgba(255, 255, 255, 0.48),
+        50vw 92vh 0 0 rgba(255, 255, 255, 0.36),
+        60vw 86vh 0 0 rgba(255, 255, 255, 0.28),
+        70vw 94vh 0 0 rgba(255, 255, 255, 0.42),
+        80vw 80vh 0 0 rgba(255, 255, 255, 0.34),
+        90vw 90vh 0 0 rgba(255, 255, 255, 0.5);
+    animation: twinkle 6s ease-in-out infinite;
+}
+
+/* ── Capa de estrellas brillantes (2px) — parpadeo desfasado para que el cielo no titile en bloque ── */
+html::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+        14vw 18vh 0 0 rgba(255, 255, 255, 0.6),
+        34vw 28vh 0 0 rgba(255, 255, 255, 0.45),
+        54vw 12vh 0 0 rgba(255, 255, 255, 0.7),
+        74vw 32vh 0 0 rgba(255, 255, 255, 0.5),
+        24vw 52vh 0 0 rgba(255, 255, 255, 0.55),
+        44vw 72vh 0 0 rgba(255, 255, 255, 0.65),
+        64vw 48vh 0 0 rgba(255, 255, 255, 0.4),
+        84vw 68vh 0 0 rgba(255, 255, 255, 0.58),
+        4vw 42vh 0 0 rgba(255, 255, 255, 0.48),
+        94vw 22vh 0 0 rgba(255, 255, 255, 0.62),
+        18vw 76vh 0 0 rgba(255, 255, 255, 0.52),
+        58vw 82vh 0 0 rgba(255, 255, 255, 0.44),
+        78vw 8vh 0 0 rgba(255, 255, 255, 0.68),
+        38vw 92vh 0 0 rgba(255, 255, 255, 0.38);
+    animation: twinkle 4s ease-in-out infinite reverse;
+    animation-delay: -1.5s;
+}
+
+/* ── Planeta gigante de fondo (sol lejano) ── */
+body::before {
+    content: '';
+    position: fixed;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    top: 6%;
+    right: -20px;
+    background: var(--planet-pink);
+    box-shadow:
+        inset -18px -12px 30px rgba(0, 0, 0, 0.7),
+        inset 12px 10px 22px rgba(255, 200, 220, 0.18),
+        0 0 60px rgba(255, 107, 157, 0.25),
+        0 0 120px rgba(45, 18, 77, 0.3);
+    animation: planetSpin3d 40s var(--ease-orbit) infinite;
+    will-change: transform;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.85;
+}
+
+/* ── Planeta azul con atmósfera ── */
+body::after {
+    content: '';
+    position: fixed;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    bottom: 14%;
+    left: -12px;
+    background: var(--planet-blue);
+    box-shadow:
+        inset -14px -8px 22px rgba(0, 0, 0, 0.65),
+        inset 8px 8px 16px rgba(150, 200, 255, 0.15),
+        0 0 40px rgba(62, 100, 180, 0.3),
+        0 0 0 4px rgba(126, 184, 255, 0.08);
+    animation: planetSpin3d 55s var(--ease-orbit) infinite reverse;
+    will-change: transform;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.75;
+}
+
+/* ── Sistema planetario por pantalla activa ── */
+.screen.active::before {
+    content: '';
+    position: fixed;
+    width: var(--planet-size-screen);
+    height: var(--planet-size-screen);
+    border-radius: 50%;
+    top: 10%;
+    left: 6%;
+    background: var(--planet-purple);
+    box-shadow:
+        inset -8px -5px 14px rgba(0, 0, 0, 0.6),
+        inset 5px 5px 10px rgba(200, 160, 255, 0.14),
+        0 0 24px var(--nebula-glow);
+    animation: planetSpin3d 22s var(--ease-orbit) infinite;
+    will-change: transform;
+    pointer-events: auto;
+    z-index: 3;
+}
+
+.screen.active::after {
+    content: '';
+    position: fixed;
+    width: var(--moon-size-screen);
+    height: var(--moon-size-screen);
+    border-radius: 50%;
+    top: 10%;
+    left: 6%;
+    background: var(--moon-surface);
+    box-shadow:
+        inset -2px -1px 4px rgba(0, 0, 0, 0.35),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.3);
+    animation: screenMoonOrbit var(--orbit-duration) var(--ease-orbit) infinite;
+    will-change: transform;
+    pointer-events: none;
+    z-index: 4;
+    /* Centrado en el planeta: la mitad de --planet-size-screen (44px / 2) */
+    transform-origin: 22px 22px;
+}
+
+/* Tap en la pantalla acelera la órbita de la luna — mismo lenguaje táctil que .card */
+.screen.active:active::after {
+    animation-duration: var(--orbit-duration-fast);
+}
+
+/* ── Canvas del universo interactivo (estrellas + partículas dibujadas en JS) ── */
+#universe-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.7;
+}

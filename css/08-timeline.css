@@ -1,0 +1,178 @@
+/* 08-timeline.css — Línea de tiempo cósmica */
+.timeline-card {
+    max-width: 100%;
+}
+
+.section-desc {
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.timeline-container {
+    position: relative;
+    margin: 16px auto 26px;
+    padding: 8px 0;
+    text-align: left;
+}
+
+/* Hilo orbital vertical — en móvil pegado a la izquierda */
+.timeline-container::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--primary-love), var(--accent-rose), transparent);
+    top: 0;
+    bottom: 0;
+    left: 14px;
+    border-radius: 20px;
+    box-shadow: 0 0 8px var(--shadow-glow);
+}
+
+.timeline-item {
+    padding: 8px 12px 8px 44px;
+    position: relative;
+    background-color: transparent;
+}
+
+/* Planeta marcador en lugar de emoji */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 5px;
+    top: 18px;
+    z-index: 2;
+    border-radius: 50%;
+    background: var(--planet-pink);
+    box-shadow:
+        inset -4px -3px 8px rgba(0, 0, 0, 0.55),
+        inset 3px 3px 6px rgba(255, 180, 210, 0.2),
+        0 0 12px var(--shadow-glow);
+    animation: planetSpin 18s linear infinite;
+    will-change: transform;
+}
+
+.timeline-item:nth-child(2)::after {
+    background: var(--planet-purple);
+    animation-duration: 24s;
+}
+
+.timeline-item:nth-child(3)::after {
+    background: var(--planet-blue);
+    animation-duration: 30s;
+}
+
+.timeline-content {
+    padding: 14px 16px;
+    background: var(--glass-bg);
+    position: relative;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 0.5px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Mensaje oculto revelado al flip táctil */
+.timeline-content::before {
+    content: '✨';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: rgba(45, 18, 77, 0.85);
+    border-radius: 14px;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.timeline-content:active {
+    animation: timelineFlip 0.6s ease-in-out;
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 24px var(--shadow-glow);
+}
+
+.timeline-content:active::before {
+    opacity: 1;
+}
+
+.timeline-date {
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.timeline-content p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-dark);
+}
+
+/* ── Escritorio / pantallas grandes: timeline clásica alternada ──
+   Usa las clases .left / .right que el HTML ya trae en cada .timeline-item. */
+@media (min-width: 768px) {
+    .timeline-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* La línea orbital se centra en vez de pegarse a la izquierda */
+    .timeline-container::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .timeline-item {
+        width: 50%;
+        padding: 10px 44px;
+    }
+
+    .timeline-item.left {
+        align-self: flex-start;
+        text-align: right;
+    }
+
+    .timeline-item.right {
+        align-self: flex-end;
+        text-align: left;
+    }
+
+    /* El planeta-marcador salta al borde que toca la línea central según el lado */
+    .timeline-item::after {
+        left: auto;
+        right: auto;
+    }
+
+    .timeline-item.left::after {
+        right: -9px;
+    }
+
+    .timeline-item.right::after {
+        left: -9px;
+    }
+
+    .section-desc {
+        font-size: 1rem;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .timeline-content p {
+        font-size: 1rem;
+    }
+}

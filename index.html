@@ -1,11 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Para Alguien Completamente Especial 🌸✨</title>
+    <!-- CSS Layers -->
+    <link rel="stylesheet" href="css/01-reset.css">
+    <link rel="stylesheet" href="css/02-variables.css">
+    <link rel="stylesheet" href="css/03-global.css">
+    <link rel="stylesheet" href="css/04-loading.css">
+    <link rel="stylesheet" href="css/05-universe.css">
+    <link rel="stylesheet" href="css/06-intro.css">
+    <link rel="stylesheet" href="css/07-story.css">
+    <link rel="stylesheet" href="css/08-timeline.css">
+    <link rel="stylesheet" href="css/09-game.css">
+    <link rel="stylesheet" href="css/10-proposal.css">
+    <link rel="stylesheet" href="css/11-effects.css">
+    <link rel="stylesheet" href="css/12-animations.css">
+    <link rel="stylesheet" href="css/13-responsive.css">
+    <!-- Third Party Confetti (Fallback internal copy implemented in JS, but keeping library declaration if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
+
 <body>
-    <h1>nombre del nefilin</h1>
+
+    <!-- Fondo de estrellas e interactivo cósmico -->
+    <canvas id="universe-canvas"></canvas>
+    <canvas id="particles-canvas"></canvas>
+    <div id="custom-cursor">🌸</div>
+
+    <!-- Audio Local Escondido -->
+    <audio id="local-audio" loop>
+        <source src="assets/music/musica.m4a" type="audio/mp3">
+        <source src="musica.m4a" type="audio/mp3">
+    </audio>
+
+    <!-- Pantalla 1: Loading Preloader Inicial -->
+    <div class="screen active" id="screen-loading">
+        <div class="loader-content">
+            <div class="pulsing-heart">💖</div>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="initial-load-bar"></div>
+            </div>
+            <p class="loading-text" id="loading-text-hint">Cargando un pedacito de mi corazón...</p>
+        </div>
+    </div>
+
+    <!-- Pantalla 2: Introducción Interactiva -->
+    <div class="screen" id="screen-intro">
+        <div class="card glass-card fade-in">
+            <div class="avatar-container">✨🌸✨</div>
+            <h1 class="title">Hola, persona favorita...</h1>
+            <p class="subtitle">He construido este rincón digital interactivo especialmente para ti. Dale al botón de
+                abajo para encender la música y empezar a descubrirlo.</p>
+            <button class="btn pulse-btn" id="btn-start-journey">Comenzar el viaje ✨</button>
+        </div>
+    </div>
+
+    <!-- Pantalla 3: La Carta Mecanografiada / Historia -->
+    <div class="screen" id="screen-story">
+        <div class="card long-card">
+            <div class="card-icon">✉️</div>
+            <h2 class="section-title">Lo que siempre quise decirte...</h2>
+
+            <div class="letter-box">
+                <div class="typewriter-container" id="typewriter-text"></div>
+            </div>
+
+            <button class="btn hidden btn-next-step" id="btn-to-timeline">Seguir leyendo... 💕</button>
+        </div>
+    </div>
+
+    <!-- Pantalla 4: Nuestra Línea de Tiempo / Momentos Mágicos -->
+    <div class="screen" id="screen-timeline">
+        <div class="card timeline-card">
+            <h2 class="section-title">Nuestra Pequeña Gran Historia ✨</h2>
+            <p class="section-desc">Cada momento a tu lado ha dejado una huella imborrable...</p>
+
+            <div class="timeline-container">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span class="timeline-date">El Inicio 🌸</span>
+                        <p>Cuando empezamos a hablar por primera vez y tu sola presencia cambió por completo la
+                            dirección de mis días ordinarios.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Las Risas 💕</span>
+                        <p>Tus ocurrencias, tus audios, tus mensajes inesperados... cada detalle tuyo se convirtió
+                            velozmente en mi parte favorita del día.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span class="timeline-date">El Sentimiento 💞</span>
+                        <p>El instante exacto en que me di cuenta de que te habías vuelto alguien irremplazable, único y
+                            sumamente especial en mi vida.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" id="btn-to-game">Ir al minijuego 🎮</button>
+        </div>
+    </div>
+
+    <!-- Pantalla 5: Minijuego de Corazones Cayendo -->
+    <div class="screen" id="screen-game">
+        <div class="card game-card">
+            <h2 class="game-title">¡Atrapa los Recuerdos! 💖</h2>
+            <p class="game-instructions">Mueve la canastilla rosa con tu mouse o desliza tu dedo por la pantalla. ¡Junta
+                15 corazones para desbloquear la sorpresa final!</p>
+
+            <div class="game-meta">
+                <div id="game-score">Corazones atrapados: 0 / 15</div>
+                <div class="game-progress-wrapper">
+                    <div class="game-progress-bar" id="game-progress-fill"></div>
+                </div>
+            </div>
+
+            <canvas id="game-canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- Pantalla 6: La Propuesta Final Irresistible -->
+    <div class="screen" id="screen-proposal">
+        <div class="card final-card scale-up">
+            <div class="heart-crown">💖🌟💖</div>
+            <h2 class="final-title">¡Lo lograste a la perfección! 🥰</h2>
+            <p class="final-paragraph">Gracias por regalarme estos minutos de tu tiempo para recorrer este pequeño
+                universo. Sabes perfectamente lo muchísimo que me encantas y la falta infinita que me haces a diario...
+            </p>
+
+            <!-- Gatito Cute Animado Puro CSS/Emoji -->
+            <div class="cute-kitty-box">
+                <div class="kitty-avatar">🐱</div>
+                <div class="kitty-rose">🌹</div>
+            </div>
+
+            <h1 class="proposal-question">¿Me darías el honor de salir conmigo? 🥺👉👈</h1>
+
+            <div class="proposal-buttons">
+                <a href="https://wa.me/8124301959?text=%C2%A1S%C3%8D%21%20Me%20encantar%C3%ADa%20salir%20contigo%20%F0%9F%92%96%E2%9C%A8"
+                    class="btn-choice yes" id="btn-yes" target="_blank">¡SÍ, ME ENCANTARÍA! 💖</a>
+                <button class="btn-choice no" id="btn-no">Nop u.u</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Enlazados de la Arquitectura Modular -->
+    <script src="js/01-loading.js"></script>
+    <script src="js/02-navigation.js"></script>
+    <script src="js/03-audio.js"></script>
+    <script src="js/04-universe.js"></script>
+    <script src="js/05-stars.js"></script>
+    <script src="js/06-particles.js"></script>
+    <script src="js/07-typing.js"></script>
+    <script src="js/08-story.js"></script>
+    <script src="js/09-game.js"></script>
+    <script src="js/10-game.js"></script>
+    <script src="js/11-proposal.js"></script>
+    <script src="js/12-effects.js"></script>
+    <script src="js/13-cursor.js"></script>
 </body>
+
 </html>

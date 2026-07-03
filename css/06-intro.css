@@ -1,0 +1,58 @@
+/* 06-intro.css — Pantalla de introducción */
+.avatar-container {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    filter: drop-shadow(0 0 12px rgba(255, 214, 255, 0.4));
+}
+
+.title {
+    font-size: 1.65rem;
+    color: var(--primary-dark);
+    margin-bottom: 14px;
+    line-height: 1.35;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pulse-btn {
+    animation: simplePulse 2.5s infinite;
+    will-change: transform;
+}
+
+.pulse-btn:active {
+    animation: none;
+}
+
+/* ── Escritorio / pantallas grandes ──
+   768px coincide con el umbral "isMobile" usado en los archivos JS del universo. */
+@media (min-width: 768px) {
+    .avatar-container {
+        font-size: 3.6rem;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        font-size: 2.1rem;
+    }
+
+    .subtitle {
+        font-size: 1.05rem;
+        max-width: 380px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* En desktop hay hover real: reforzamos el pulso al pasar el mouse, sin depender de él */
+    .pulse-btn:hover {
+        animation-duration: 1.6s;
+    }
+}

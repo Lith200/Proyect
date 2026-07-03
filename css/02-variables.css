@@ -1,0 +1,57 @@
+/* 02-variables.css — Design tokens cósmicos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Fondo espacial */
+    --space-black: #0b0b1a;
+    --space-midnight: #11112e;
+    --nebula-purple: #2d124d;
+    --nebula-glow: rgba(45, 18, 77, 0.55);
+    --cosmic-blue: #1a1a4e;
+
+    /* Acentos románticos en el cosmos */
+    --primary-love: #c77dff;
+    --primary-dark: #e0aaff;
+    --hover-love: #d4a5ff;
+    --accent-gold: #ffd6ff;
+    --accent-rose: #ff6b9d;
+
+    /* Tipografía */
+    --text-main: rgba(240, 235, 255, 0.92);
+    --text-muted: rgba(200, 190, 230, 0.75);
+    --text-dark: rgba(255, 255, 255, 0.88);
+
+    /* Visores de nave (glass) */
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-bg-soft: rgba(255, 255, 255, 0.04);
+    --glass-bg-strong: rgba(17, 17, 46, 0.72);
+    --glass-track-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.08);
+    --space-glass: rgba(11, 11, 26, 0.6);
+    --cosmic-blue-glow: rgba(26, 26, 78, 0.6);
+
+
+    /* Sombras y profundidad */
+    --shadow-cosmic: rgba(45, 18, 77, 0.45);
+    --shadow-glow: rgba(199, 125, 255, 0.35);
+    --star-glow: rgba(255, 255, 255, 0.5);
+
+    /* Planetas */
+    --planet-purple: radial-gradient(circle at 32% 28%, #9b6fd4 0%, #5a2d82 38%, #2d124d 68%, #0b0b1a 100%);
+    --planet-pink: radial-gradient(circle at 35% 30%, #ff9ecf 0%, #c44d8a 42%, #5a1a4a 72%, #0b0b1a 100%);
+    --planet-blue: radial-gradient(circle at 30% 25%, #7eb8ff 0%, #3a5a9e 40%, #11112e 70%, #0b0b1a 100%);
+    --moon-surface: radial-gradient(circle at 38% 32%, #e8e4f0 0%, #a89bb8 45%, #5a5068 100%);
+
+    /* Motion */
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-tap: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --float-duration: 5s;
+    --orbit-duration: 14s;
+    --orbit-duration-fast: 3s;
+
+    /* Mobile-first spacing */
+    --card-radius: 24px;
+    --card-padding: 28px 20px;
+    --card-max-width: 100%;
+}

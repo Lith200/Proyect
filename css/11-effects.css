@@ -1,0 +1,21 @@
+/* 11-effects.css — Capas de efectos y cursor */
+
+/* Canvas donde 12-effects.js dibuja la explosión de corazones/flores al decir "sí",
+   y 13-cursor.js dibuja el rastro de partículas al mover el dedo/mouse. */
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Cursor personalizado apagado por defecto: el proyecto es mobile-first y no hay
+   cursor físico en pantallas táctiles. Si se agrega una versión de escritorio,
+   activar aquí con display:block y posicionar vía JS (13-cursor.js ya escucha mousemove). */
+#custom-cursor {
+    display: none;
+}
