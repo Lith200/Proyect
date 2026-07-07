@@ -48,22 +48,37 @@
     border-radius: 50%;
     background: var(--planet-pink);
     box-shadow:
-        inset -4px -3px 8px rgba(0, 0, 0, 0.62),
-        inset 2px 2px 5px rgba(255, 180, 210, 0.18),
+        inset -4px -3px 8px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 5px rgba(255, 200, 225, 0.2),
         var(--sphere-rim-light),
         var(--planet-outline-stroke),
-        0 0 12px var(--shadow-glow);
+        0 0 10px 1px var(--rim-glow-pink),
+        0 0 14px var(--shadow-glow);
     animation: planetSpin 18s linear infinite;
     will-change: transform;
 }
 
 .timeline-item:nth-child(2)::after {
     background: var(--planet-purple);
+    box-shadow:
+        inset -4px -3px 8px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 5px rgba(220, 190, 255, 0.2),
+        var(--sphere-rim-light),
+        var(--planet-outline-stroke),
+        0 0 10px 1px var(--rim-glow-purple),
+        0 0 14px var(--shadow-glow);
     animation-duration: 24s;
 }
 
 .timeline-item:nth-child(3)::after {
     background: var(--planet-blue);
+    box-shadow:
+        inset -4px -3px 8px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 5px rgba(180, 220, 255, 0.2),
+        var(--sphere-rim-light),
+        var(--planet-outline-stroke),
+        0 0 10px 1px var(--rim-glow-blue),
+        0 0 14px var(--shadow-glow);
     animation-duration: 30s;
 }
 

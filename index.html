@@ -26,15 +26,11 @@
 <body>
 
     <!-- Decoración cósmica de fondo: planetas reales en el DOM (no pseudo-elementos)
-         para poder lograr un anillo que pasa físicamente detrás y delante del planeta -->
+         para poder lograr un anillo que pasa físicamente detrás y delante del planeta.
+         Nota: se removieron las nebulosas CSS (blur pesado) y el planeta rosa —
+         causaban artefactos visuales (bloques/manchas) en motores de renderizado
+         con soporte limitado de filter:blur (ver 05-universe.css). -->
     <div class="cosmic-decor" aria-hidden="true">
-
-        <!-- Nebulosas -->
-        <div class="cosmic-nebula nebula-purple"></div>
-        <div class="cosmic-nebula nebula-blue"></div>
-
-        <!-- Planeta Rosa -->
-        <div class="deco-planet deco-planet--pink"></div>
 
         <!-- Planeta Azul -->
         <div class="deco-planet-group">
@@ -187,6 +183,7 @@
     <script src="js/11-proposal.js"></script>
     <script src="js/12-effects.js"></script>
     <script src="js/13-cursor.js"></script>
+    <script src="js/14-comets.js"></script>
 </body>
 
 </html>

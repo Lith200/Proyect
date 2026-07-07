@@ -85,38 +85,14 @@ html::after {
     z-index: 0;
 }
 
-/* ── Cometas ocasionales ──
-   body::before/::after quedaron libres al mover los planetas grandes a elementos
-   reales — los aprovechamos aquí. Cada uno es una línea con degradado (cola) y
-   una cabeza brillante, que cruza la pantalla una vez cada ~16-18s. */
-body::before,
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 90px;
-    height: 2px;
-    border-radius: 50%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8) 75%, #fff 100%);
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.65));
-    pointer-events: none;
-    z-index: 1;
-    will-change: transform, opacity;
-}
-
-body::before {
-    animation: cometFly1 17s linear infinite;
-    animation-delay: 3s;
-}
-
-body::after {
-    width: 70px;
-    background: linear-gradient(90deg, transparent, rgba(255, 214, 255, 0.75) 75%, #ffe9c7 100%);
-    filter: drop-shadow(0 0 5px rgba(255, 214, 255, 0.5));
-    animation: cometFly2 22s linear infinite;
-    animation-delay: 9s;
-}
+/* ── Cometas ──
+   El sistema de cometas ya no vive aquí en CSS: se movió por completo a
+   canvas (ver 14-comets.js), porque un cometa realista con polvo
+   disperso y desvaneciéndose es mucho más natural con partículas
+   individuales que con una forma CSS fija (por buena que fuera la cuña
+   anterior, seguía siendo una silueta rígida). El canvas dibuja el
+   núcleo/halo y las partículas de polvo directamente sobre
+   #universe-canvas, en la misma capa que estrellas y nebulosas. */
 
 /* ── Grupo planeta azul + anillo ──
    Orden en el HTML: anillo (atrás) → planeta → anillo (adelante).
@@ -141,12 +117,13 @@ body::after {
     left: -20px;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.7;
-    /* Tilt 3D fijo: anillo + planeta se leen como un solo objeto inclinado en el
-       espacio, no como "un círculo con una línea cruzada encima". El parallax
-       (actualizado por 04-universe.js al hacer scroll) viaja en la misma propiedad. */
-    transform: perspective(320px) rotateX(8deg) translateY(var(--parallax-y, 0px));
+    opacity: 0.85;
     transform-style: preserve-3d;
+    /* Deriva propia además del giro del planeta: el grupo entero flota y se
+       balancea suavemente (no solo la esfera gira sobre sí misma) — mucho
+       más vivo que quedarse fijo con solo un spin interno. El parallax
+       (04-universe.js) sigue viajando dentro de este mismo transform. */
+    animation: planetGroupDrift 9s ease-in-out infinite;
 }
 
 .deco-planet-group .deco-planet--blue {
@@ -158,16 +135,34 @@ body::after {
     border-radius: 50%;
     background: var(--planet-blue);
     box-shadow:
-        inset -16px -10px 26px rgba(0, 0, 0, 0.72),
-        inset 7px 7px 14px rgba(150, 200, 255, 0.13),
+        inset -14px -9px 22px rgba(0, 0, 0, 0.6),
+        inset 7px 7px 14px rgba(180, 220, 255, 0.16),
         var(--sphere-rim-light),
         var(--planet-outline-stroke),
-        0 0 26px rgba(62, 100, 180, 0.22);
+        /* Rim light saturado tipo anime — el borde "brilla" en un azul vívido
+           en vez de solo tener sombra oscura alrededor */
+        0 0 18px 2px var(--rim-glow-blue),
+        0 0 34px rgba(62, 100, 180, 0.25);
     /* Keyframe "Centered": conserva el translate(-50%,-50%) en cada fotograma
        (ver nota en 12-animations.css) — el parallax del grupo ya viaja en el
        padre, así que aquí no hace falta duplicarlo. */
     animation: planetSpin3dCentered 55s var(--ease-orbit) infinite reverse;
     will-change: transform;
+}
+
+/* Aura pulsante detrás del planeta — "respira" en intensidad, como el
+   halo mágico de un objeto celeste en escenas de anime. Al ser un círculo
+   perfecto y simétrico, girar junto con el planeta (comparten transform)
+   no genera ningún artefacto visual. */
+.deco-planet-group .deco-planet--blue::after {
+    content: '';
+    position: absolute;
+    inset: -22%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--rim-glow-blue) 0%, transparent 70%);
+    animation: planetAuraPulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .deco-ring {
@@ -177,8 +172,8 @@ body::after {
     width: var(--deco-ring-w);
     height: var(--deco-ring-h);
     border-radius: 50%;
-    border: 5px solid rgba(205, 226, 255, 0.55);
-    box-shadow: 0 0 10px rgba(180, 210, 255, 0.3);
+    border: 5px solid rgba(205, 226, 255, 0.6);
+    box-shadow: 0 0 14px rgba(180, 210, 255, 0.4);
     transform: translate(-50%, -50%) rotate(-16deg);
 }
 
@@ -187,8 +182,35 @@ body::after {
 }
 
 .deco-ring--front {
-    opacity: 0.9;
-    border-color: rgba(220, 235, 255, 0.7);
+    opacity: 0.95;
+    border-color: rgba(225, 240, 255, 0.8);
+}
+
+/* Un par de destellos puntuales sobre el anillo delantero — el típico
+   "brillito" mágico anime, no busca ser matemáticamente exacto sobre la
+   elipse, solo dar vida al anillo con un par de chispas que titilan. */
+.deco-ring--front::before,
+.deco-ring--front::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.85);
+    animation: ringGlint 2.6s ease-in-out infinite;
+}
+
+.deco-ring--front::before {
+    top: 38%;
+    left: 14%;
+    animation-delay: 0s;
+}
+
+.deco-ring--front::after {
+    top: 58%;
+    right: 16%;
+    animation-delay: 1.3s;
 }
 
 /* ── Sistema planetario "ancla" ──
@@ -206,12 +228,16 @@ body::after {
     left: 6%;
     background: var(--planet-purple);
     box-shadow:
-        inset -9px -6px 16px rgba(0, 0, 0, 0.7),
-        inset 4px 4px 8px rgba(200, 160, 255, 0.12),
+        inset -8px -5px 14px rgba(0, 0, 0, 0.55),
+        inset 4px 4px 8px rgba(220, 190, 255, 0.16),
         var(--sphere-rim-light),
         var(--planet-outline-stroke),
-        0 0 24px var(--nebula-glow);
-    animation: planetSpin3d 22s var(--ease-orbit) infinite;
+        /* Rim light saturado + glow ambiental que "respira" (ver keyframe) */
+        0 0 16px 1px var(--rim-glow-purple),
+        0 0 28px var(--nebula-glow);
+    animation:
+        planetSpin3d 22s var(--ease-orbit) infinite,
+        planetGlowBreathe 4.5s ease-in-out infinite;
     will-change: transform;
     pointer-events: auto;
     z-index: 3;
@@ -228,9 +254,10 @@ body::after {
     left: 6%;
     background: var(--moon-surface);
     box-shadow:
-        inset -2px -1px 4px rgba(0, 0, 0, 0.35),
-        inset 1px 1px 3px rgba(255, 255, 255, 0.3),
-        var(--sphere-rim-light);
+        inset -2px -1px 4px rgba(0, 0, 0, 0.3),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.35),
+        var(--sphere-rim-light),
+        0 0 6px rgba(255, 255, 255, 0.35);
     animation: screenMoonOrbit var(--orbit-duration) var(--ease-orbit) infinite;
     will-change: transform;
     pointer-events: none;

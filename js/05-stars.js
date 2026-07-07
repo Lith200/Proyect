@@ -10,7 +10,6 @@
     let dust = [];
     let cosmicDust = [];
     let nebulas = []; // FIX: declaración explícita (antes era global implícita)
-    let shootingStar = null;
     let canvas = null;
     /* ==========================================================
        STAR TYPES
@@ -37,26 +36,33 @@
     };
     /* ==========================================================
        NEBULAS
+       Paleta ampliada tipo "cielo anime" (rosa/lavanda/cian/dorado) en vez
+       de solo violeta/azul, y cada nebulosa "respira" en opacidad además
+       de desplazarse — así el fondo se siente vivo, no un fondo pintado
+       una sola vez y quieto.
     ========================================================== */
     const NEBULA_COLORS = [
-        "rgba(155,120,255,0.08)",
-        "rgba(90,180,255,0.06)",
-        "rgba(255,120,200,0.05)",
-        "rgba(255,210,120,0.04)"
+        "rgba(170,130,255,0.10)",
+        "rgba(100,190,255,0.08)",
+        "rgba(255,140,205,0.09)",
+        "rgba(255,215,150,0.06)",
+        "rgba(190,150,255,0.08)"
     ];
 
     function createNebulas(){
         nebulas = [];
-        const total = window.innerWidth < 768 ? 3 : 5;
+        const total = window.innerWidth < 768 ? 4 : 7;
 
         for(let i = 0; i < total; i++){
             nebulas.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                radius: Math.random() * 280 + 220,
+                radius: Math.random() * 260 + 200,
                 color: NEBULA_COLORS[Math.floor(Math.random() * NEBULA_COLORS.length)],
                 offset: Math.random() * Math.PI * 2,
-                speed: Math.random() * 0.00015 + 0.00005
+                speed: Math.random() * 0.00015 + 0.00005,
+                breathPhase: Math.random() * Math.PI * 2,
+                breathSpeed: Math.random() * 0.0006 + 0.0003
             });
         }
     }
@@ -79,22 +85,6 @@
                 driftY: (Math.random() - 0.5) * 0.015
             });
         }
-    }
-
-    /* ==========================================================
-       SHOOTING STAR
-    ========================================================== */
-    function createShootingStar(){
-        shootingStar = {
-            active: false,
-            x: 0,
-            y: 0,
-            vx: 0,
-            vy: 0,
-            length: 180,
-            opacity: 1,
-            cooldown: Math.random() * 1200 + 900
-        };
     }
 
     /* ==========================================================
@@ -161,7 +151,6 @@
 
         createNebulas();
         createDust();
-        createShootingStar();
 
         const isMobile = window.innerWidth < 768;
         const scale = isMobile ? 0.6 : 1;
@@ -203,38 +192,11 @@
 
     /* ==========================================================
        UPDATE
+       NOTA: el sistema de "estrella fugaz" simple (línea recta con
+       cooldown aleatorio) que vivía aquí se removió — quedaba duplicado
+       y visualmente más pobre que el nuevo cometa de partículas de
+       14-comets.js, que ahora es el único sistema de cometas del proyecto.
     ========================================================== */
-    function updateShootingStar(){
-        if(!shootingStar) return;
-
-        if(!shootingStar.active){
-            shootingStar.cooldown--;
-
-            if(shootingStar.cooldown <= 0){
-                shootingStar.active = true;
-                shootingStar.x = Math.random() * canvas.width * 0.6;
-                shootingStar.y = Math.random() * canvas.height * 0.35;
-                shootingStar.vx = 9 + Math.random() * 4;
-                shootingStar.vy = 5 + Math.random() * 2;
-                shootingStar.opacity = 1;
-            }
-            return;
-        }
-
-        shootingStar.x += shootingStar.vx;
-        shootingStar.y += shootingStar.vy;
-        shootingStar.opacity -= 0.012;
-
-        if(
-            shootingStar.opacity <= 0 ||
-            shootingStar.x > canvas.width + 200 ||
-            shootingStar.y > canvas.height + 200
-        ){
-            shootingStar.active = false;
-            shootingStar.cooldown = Math.random() * 1800 + 1200;
-        }
-    }
-
     function update() {
         const time = window.Universe?.time || 0;
 
@@ -264,8 +226,6 @@
             if (star.y > canvas.height + 5) star.y = -5;
         });
 
-        updateShootingStar();
-
         // Update de Polvo Cósmico Volumétrico (Fase 6)
         cosmicDust.forEach(dust => {
             dust.y += dust.speed;
@@ -286,9 +246,14 @@
     function drawNebulas(ctx){
         nebulas.forEach(n => {
             n.offset += n.speed;
+            n.breathPhase += n.breathSpeed;
 
             const x = n.x + Math.cos(n.offset) * 20;
             const y = n.y + Math.sin(n.offset) * 20;
+
+            // Respiración suave de opacidad (0.75–1.15 del valor base) — evita
+            // que la nebulosa se sienta como un fondo pintado y estático
+            const breath = 0.75 + (Math.sin(n.breathPhase) + 1) * 0.2;
 
             const gradient = ctx.createRadialGradient(
                 x, y, 0,
@@ -298,13 +263,15 @@
             gradient.addColorStop(0, n.color);
             gradient.addColorStop(1, "rgba(0,0,0,0)");
 
+            ctx.save();
+            ctx.globalAlpha = breath;
             ctx.fillStyle = gradient;
             ctx.beginPath();
             ctx.arc(x, y, n.radius, 0, Math.PI * 2);
 
             ctx.globalCompositeOperation = "screen";
             ctx.fill();
-            ctx.globalCompositeOperation = "source-over";
+            ctx.restore();
         });
     }
 
@@ -333,48 +300,9 @@
         ctx.globalAlpha = 1;
     }
 
-    function drawShootingStar(ctx){
-        if(!shootingStar) return;
-        if(!shootingStar.active) return;
-
-        ctx.save();
-        ctx.globalAlpha = shootingStar.opacity;
-        ctx.strokeStyle = "#FFFFFF";
-        ctx.lineWidth = 2;
-        ctx.shadowBlur = 18;
-        ctx.shadowColor = "#FFFFFF";
-
-        ctx.beginPath();
-        ctx.moveTo(shootingStar.x, shootingStar.y);
-        ctx.lineTo(
-            shootingStar.x - shootingStar.length,
-            shootingStar.y - shootingStar.length * 0.55
-        );
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(shootingStar.x, shootingStar.y, 2.8, 0, Math.PI * 2);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(shootingStar.x, shootingStar.y, 14, 0, Math.PI * 2);
-
-        const glow = ctx.createRadialGradient(
-            shootingStar.x, shootingStar.y, 0,
-            shootingStar.x, shootingStar.y, 14
-        );
-        glow.addColorStop(0, "rgba(255,255,255,.35)");
-        glow.addColorStop(1, "rgba(255,255,255,0)");
-
-        ctx.fillStyle = glow;
-        ctx.fill();
-
-        ctx.restore();
-    }
-
     function draw(ctx) {
-        // Render en orden de profundidad: Nebulas → Dust Base → Constellations → Cosmic Dust → Stars → Shooting Star
+        // Render en orden de profundidad: Nebulas → Dust Base → Constellations → Cosmic Dust → Stars
+        // (el cometa de partículas se dibuja aparte, en 14-comets.js, como su propia capa)
         drawNebulas(ctx);
         drawDust(ctx);
 
@@ -420,8 +348,6 @@
             ctx.fill();
             ctx.restore();
         });
-
-        drawShootingStar(ctx);
     }
     /* ==========================================================
        LAYER

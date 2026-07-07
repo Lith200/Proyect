@@ -110,10 +110,74 @@
 
 }
 
-/* Órbita lunar alrededor del planeta de tarjeta */
-@keyframes moonOrbit {
-    0% { transform: rotate(0deg) translateX(28px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
+/* Deriva flotante del grupo planeta+anillo — conserva la lectura de
+   --parallax-y (actualizada por 04-universe.js al hacer scroll) igual que
+   planetSpin3d, pero le suma un balanceo propio de "flotar en el espacio"
+   (sube/baja + leve giro Z), en vez de quedarse estático salvo por el
+   parallax. Es lo que le da vida al grupo completo, no solo al planeta
+   girando sobre sí mismo. */
+@keyframes planetGroupDrift {
+    0%, 100% {
+        transform:
+            perspective(320px) rotateX(8deg)
+            translateY(calc(var(--parallax-y, 0px) + 0px))
+            rotateZ(0deg);
+    }
+    50% {
+        transform:
+            perspective(320px) rotateX(8deg)
+            translateY(calc(var(--parallax-y, 0px) - 12px))
+            rotateZ(1.6deg);
+    }
+}
+
+/* Aura pulsante detrás del planeta — "respira" en intensidad, el halo
+   mágico típico de objetos celestes en escenas de anime */
+@keyframes planetAuraPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(0.94);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.08);
+    }
+}
+
+/* Destello puntual sobre el anillo — titila y crece/encoge levemente */
+@keyframes ringGlint {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Glow ambiental que "respira" en el planeta ancla (Intro/Propuesta) —
+   solo anima la capa de resplandor externo del box-shadow, el resto se
+   mantiene igual en cada paso para no repetir toda la sombra interna */
+@keyframes planetGlowBreathe {
+    0%, 100% {
+        box-shadow:
+            inset -8px -5px 14px rgba(0, 0, 0, 0.55),
+            inset 4px 4px 8px rgba(220, 190, 255, 0.16),
+            var(--sphere-rim-light),
+            var(--planet-outline-stroke),
+            0 0 16px 1px var(--rim-glow-purple),
+            0 0 28px var(--nebula-glow);
+    }
+    50% {
+        box-shadow:
+            inset -8px -5px 14px rgba(0, 0, 0, 0.55),
+            inset 4px 4px 8px rgba(220, 190, 255, 0.16),
+            var(--sphere-rim-light),
+            var(--planet-outline-stroke),
+            0 0 26px 4px var(--rim-glow-purple),
+            0 0 42px var(--nebula-glow);
+    }
 }
 
 /* Órbita lunar en pantalla activa */
@@ -227,27 +291,13 @@
 }
 
 /* ══════════════════════════════════════
-   COMETAS OCASIONALES
+   COMETAS
    ══════════════════════════════════════
-   Cruzan la pantalla una vez cada varios segundos y desaparecen el resto
-   del ciclo (la mayor parte del keyframe el cometa está fuera de pantalla
-   y con opacidad 0 — por eso "ocasional" y no un elemento siempre visible). */
-
-@keyframes cometFly1 {
-    0%   { transform: translate(-15vw, -15vh) rotate(-32deg); opacity: 0; }
-    2%   { opacity: 1; }
-    16%  { transform: translate(70vw, 62vh) rotate(-32deg); opacity: 1; }
-    20%  { opacity: 0; }
-    100% { opacity: 0; transform: translate(70vw, 62vh) rotate(-32deg); }
-}
-
-@keyframes cometFly2 {
-    0%   { transform: translate(115vw, -12vh) rotate(28deg); opacity: 0; }
-    2%   { opacity: 1; }
-    15%  { transform: translate(20vw, 58vh) rotate(28deg); opacity: 1; }
-    19%  { opacity: 0; }
-    100% { opacity: 0; transform: translate(20vw, 58vh) rotate(28deg); }
-}
+   El movimiento del cometa (curva, escala, fundido) ya no se anima con
+   @keyframes de CSS — se calcula por frame en 14-comets.js usando una
+   curva Catmull-Rom sobre varios waypoints, lo que permite además emitir
+   partículas de polvo en tiempo real a lo largo del recorrido (algo que
+   una animación CSS declarativa no puede hacer). */
 
 /* NOTA: se removieron los keyframes "nebulaFloatPurple" y "nebulaFloatBlue" —
    pertenecían a las nebulosas CSS (.cosmic-nebula) eliminadas en 05-universe.css

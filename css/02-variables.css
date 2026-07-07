@@ -57,31 +57,41 @@
     --shadow-glow: rgba(199, 125, 255, 0.35);
     --star-glow: rgba(255, 255, 255, 0.5);
 
-    /* ── Planetas y lunas: estilo ilustración vectorial (vetas, cráteres, contorno definido) ── */
+    /* ── Planetas y lunas: estilo "3D anime" (esfera tipo sticker/toon) ──
+       En vez de degradados fotorrealistas de muchos pasos suaves, usamos:
+       1) un brillo especular pequeño y nítido (como el reflejo en los ojos
+          de un personaje anime), 2) una banda de sombra más marcada en el
+          lado opuesto a la luz (cel-shading, no un degradado continuo),
+          3) colores base más saturados/vívidos. El glow de color en el
+          borde (--rim-glow-*) se aplica aparte, en box-shadow, para que
+          el contorno "brille" con un tono contrastante — el toque típico
+          de iluminación anime. */
     --planet-purple:
-        radial-gradient(circle at 26% 22%, rgba(255, 255, 255, 0.65) 0%, transparent 9%),
-        conic-gradient(from 210deg at 42% 58%,
-            rgba(255, 255, 255, 0.16) 0deg, transparent 35deg,
-            rgba(255, 255, 255, 0.1) 90deg, transparent 130deg,
-            rgba(15, 5, 25, 0.28) 190deg, transparent 250deg,
-            rgba(255, 255, 255, 0.14) 310deg, transparent 360deg),
-        radial-gradient(circle at 32% 28%, #c9a6f2 0%, #a674e0 26%, #7b4bc4 50%, #4d2489 74%, #22103f 100%);
+        radial-gradient(circle at 30% 23%, #ffffff 0%, #ffffff 3%, transparent 7%),
+        radial-gradient(circle at 34% 29%, rgba(255, 255, 255, 0.5) 0%, transparent 16%),
+        radial-gradient(circle at 68% 74%, rgba(20, 6, 40, 0.55) 0%, transparent 44%),
+        radial-gradient(circle at 34% 30%, #f3d9ff 0%, #d8a6ff 20%, #b06fee 42%, #7c3fd1 62%, #4a1f8f 82%, #24104a 100%);
     --planet-pink:
-        radial-gradient(circle at 26% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 9%),
-        radial-gradient(circle at 58% 26%, rgba(255, 255, 255, 0.14) 0%, transparent 12%),
-        radial-gradient(circle at 24% 58%, rgba(120, 20, 68, 0.42) 0%, transparent 18%),
-        radial-gradient(circle at 66% 66%, rgba(120, 20, 68, 0.36) 0%, transparent 16%),
-        radial-gradient(circle at 44% 46%, rgba(120, 20, 68, 0.3) 0%, transparent 13%),
-        radial-gradient(circle at 35% 30%, #ffb8dd 0%, #ff85bd 26%, #dd5591 50%, #8f2f5c 76%, #3d1529 100%);
+        radial-gradient(circle at 28% 20%, #ffffff 0%, #ffffff 3%, transparent 7%),
+        radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5) 0%, transparent 15%),
+        radial-gradient(circle at 66% 72%, rgba(60, 8, 34, 0.5) 0%, transparent 44%),
+        radial-gradient(circle at 32% 26%, #ffe3f2 0%, #ffb0da 20%, #ff74b8 42%, #e0398f 62%, #921f5c 82%, #400f29 100%);
     --planet-blue:
-        radial-gradient(circle at 24% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 9%),
-        linear-gradient(105deg, transparent 40%, rgba(220, 235, 255, 0.4) 46%, rgba(180, 210, 255, 0.5) 50%, rgba(220, 235, 255, 0.35) 54%, transparent 60%),
-        radial-gradient(circle at 30% 25%, #b8dcff 0%, #7eb8ff 24%, #3a5a9e 50%, #182456 76%, #060814 100%);
+        radial-gradient(circle at 28% 21%, #ffffff 0%, #ffffff 3%, transparent 7%),
+        radial-gradient(circle at 32% 27%, rgba(255, 255, 255, 0.45) 0%, transparent 15%),
+        radial-gradient(circle at 66% 72%, rgba(6, 10, 35, 0.55) 0%, transparent 44%),
+        radial-gradient(circle at 32% 28%, #dff1ff 0%, #9fd4ff 20%, #57aaff 42%, #2f74e0 62%, #1c3f96 82%, #0c1c4a 100%);
     --moon-surface:
-        radial-gradient(circle at 30% 24%, rgba(0, 0, 0, 0.34) 0%, transparent 9%),
-        radial-gradient(circle at 62% 55%, rgba(0, 0, 0, 0.3) 0%, transparent 11%),
-        radial-gradient(circle at 46% 72%, rgba(0, 0, 0, 0.24) 0%, transparent 8%),
-        radial-gradient(circle at 38% 32%, #f2eef8 0%, #e8e4f0 32%, #a89bb8 62%, #5a5068 100%);
+        radial-gradient(circle at 28% 21%, #ffffff 0%, #ffffff 4%, transparent 8%),
+        radial-gradient(circle at 60% 62%, rgba(70, 58, 92, 0.26) 0%, transparent 10%),
+        radial-gradient(circle at 40% 76%, rgba(70, 58, 92, 0.2) 0%, transparent 8%),
+        radial-gradient(circle at 34% 30%, #ffffff 0%, #f1ecfb 30%, #cdbfe6 58%, #8b7aa8 100%);
+
+    /* Glow de borde por color — el "rim light" saturado tipo anime,
+       se usa en box-shadow junto a --sphere-rim-light/--planet-outline-stroke */
+    --rim-glow-purple: rgba(224, 150, 255, 0.55);
+    --rim-glow-pink: rgba(255, 150, 205, 0.55);
+    --rim-glow-blue: rgba(140, 200, 255, 0.55);
 
     /* Aro de luz fino en el borde iluminado — da volumen real de esfera, no de sticker plano */
     --sphere-rim-light: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
