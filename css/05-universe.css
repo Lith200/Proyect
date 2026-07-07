@@ -79,52 +79,124 @@ html::after {
     animation-delay: -1.5s;
 }
 
-/* ── Planeta gigante de fondo (sol lejano) ── */
-body::before {
-    content: '';
-    position: fixed;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    top: 6%;
-    right: -20px;
-    background: var(--planet-pink);
-    box-shadow:
-        inset -18px -12px 30px rgba(0, 0, 0, 0.7),
-        inset 12px 10px 22px rgba(255, 200, 220, 0.18),
-        0 0 60px rgba(255, 107, 157, 0.25),
-        0 0 120px rgba(45, 18, 77, 0.3);
-    animation: planetSpin3d 40s var(--ease-orbit) infinite;
-    will-change: transform;
-    pointer-events: none;
+/* ── Contenedor de decoración cósmica real (planetas fuera del flujo de pantallas) ── */
+.cosmic-decor {
+    position: relative;
     z-index: 0;
-    opacity: 0.85;
 }
 
-/* ── Planeta azul con atmósfera ── */
+/* ── Cometas ocasionales ──
+   body::before/::after quedaron libres al mover los planetas grandes a elementos
+   reales — los aprovechamos aquí. Cada uno es una línea con degradado (cola) y
+   una cabeza brillante, que cruza la pantalla una vez cada ~16-18s. */
+body::before,
 body::after {
     content: '';
     position: fixed;
-    width: 70px;
-    height: 70px;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 2px;
     border-radius: 50%;
-    bottom: 14%;
-    left: -12px;
-    background: var(--planet-blue);
-    box-shadow:
-        inset -14px -8px 22px rgba(0, 0, 0, 0.65),
-        inset 8px 8px 16px rgba(150, 200, 255, 0.15),
-        0 0 40px rgba(62, 100, 180, 0.3),
-        0 0 0 4px rgba(126, 184, 255, 0.08);
-    animation: planetSpin3d 55s var(--ease-orbit) infinite reverse;
-    will-change: transform;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8) 75%, #fff 100%);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.65));
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.75;
+    z-index: 1;
+    will-change: transform, opacity;
 }
 
-/* ── Sistema planetario por pantalla activa ── */
-.screen.active::before {
+body::before {
+    animation: cometFly1 17s linear infinite;
+    animation-delay: 3s;
+}
+
+body::after {
+    width: 70px;
+    background: linear-gradient(90deg, transparent, rgba(255, 214, 255, 0.75) 75%, #ffe9c7 100%);
+    filter: drop-shadow(0 0 5px rgba(255, 214, 255, 0.5));
+    animation: cometFly2 22s linear infinite;
+    animation-delay: 9s;
+}
+
+/* ── Grupo planeta azul + anillo ──
+   Orden en el HTML: anillo (atrás) → planeta → anillo (adelante).
+   El planeta opaco tapa el tramo central del anillo trasero, y la copia
+   delantera se pinta encima del planeta — el anillo "atraviesa" la esfera
+   de verdad, por orden de pintado, sin clip-path ni trucos de recorte.
+
+   Nota técnica: el anillo y el planeta usan tamaños en PX explícitos (no %)
+   controlados por dos variables locales (--deco-blue-size / --deco-ring-w /
+   --deco-ring-h) definidas aquí y sobreescritas por breakpoint en
+   13-responsive.css — así cada tamaño es predecible y no depende de cálculos
+   porcentuales anidados que se desalinean entre pantallas. */
+.deco-planet-group {
+    --deco-blue-size: 70px;
+    --deco-ring-w: 250px;
+    --deco-ring-h: 30px;
+
+    position: fixed;
+    width: 132px;
+    height: 92px;
+    bottom: 12%;
+    left: -20px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.7;
+    /* Tilt 3D fijo: anillo + planeta se leen como un solo objeto inclinado en el
+       espacio, no como "un círculo con una línea cruzada encima". El parallax
+       (actualizado por 04-universe.js al hacer scroll) viaja en la misma propiedad. */
+    transform: perspective(320px) rotateX(8deg) translateY(var(--parallax-y, 0px));
+    transform-style: preserve-3d;
+}
+
+.deco-planet-group .deco-planet--blue {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--deco-blue-size);
+    height: var(--deco-blue-size);
+    border-radius: 50%;
+    background: var(--planet-blue);
+    box-shadow:
+        inset -16px -10px 26px rgba(0, 0, 0, 0.72),
+        inset 7px 7px 14px rgba(150, 200, 255, 0.13),
+        var(--sphere-rim-light),
+        var(--planet-outline-stroke),
+        0 0 26px rgba(62, 100, 180, 0.22);
+    /* Keyframe "Centered": conserva el translate(-50%,-50%) en cada fotograma
+       (ver nota en 12-animations.css) — el parallax del grupo ya viaja en el
+       padre, así que aquí no hace falta duplicarlo. */
+    animation: planetSpin3dCentered 55s var(--ease-orbit) infinite reverse;
+    will-change: transform;
+}
+
+.deco-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--deco-ring-w);
+    height: var(--deco-ring-h);
+    border-radius: 50%;
+    border: 5px solid rgba(205, 226, 255, 0.55);
+    box-shadow: 0 0 10px rgba(180, 210, 255, 0.3);
+    transform: translate(-50%, -50%) rotate(-16deg);
+}
+
+.deco-ring--back {
+    opacity: 0.5;
+}
+
+.deco-ring--front {
+    opacity: 0.9;
+    border-color: rgba(220, 235, 255, 0.7);
+}
+
+/* ── Sistema planetario "ancla" ──
+   Antes aparecía en TODAS las pantallas activas; ahora solo en Intro y Propuesta
+   (el inicio y el final del recorrido), para no competir visualmente con el
+   contenido de Story/Timeline/Game, que ya tienen suficientes elementos propios. */
+#screen-intro.active::before,
+#screen-proposal.active::before {
     content: '';
     position: fixed;
     width: var(--planet-size-screen);
@@ -134,8 +206,10 @@ body::after {
     left: 6%;
     background: var(--planet-purple);
     box-shadow:
-        inset -8px -5px 14px rgba(0, 0, 0, 0.6),
-        inset 5px 5px 10px rgba(200, 160, 255, 0.14),
+        inset -9px -6px 16px rgba(0, 0, 0, 0.7),
+        inset 4px 4px 8px rgba(200, 160, 255, 0.12),
+        var(--sphere-rim-light),
+        var(--planet-outline-stroke),
         0 0 24px var(--nebula-glow);
     animation: planetSpin3d 22s var(--ease-orbit) infinite;
     will-change: transform;
@@ -143,7 +217,8 @@ body::after {
     z-index: 3;
 }
 
-.screen.active::after {
+#screen-intro.active::after,
+#screen-proposal.active::after {
     content: '';
     position: fixed;
     width: var(--moon-size-screen);
@@ -154,7 +229,8 @@ body::after {
     background: var(--moon-surface);
     box-shadow:
         inset -2px -1px 4px rgba(0, 0, 0, 0.35),
-        inset 1px 1px 3px rgba(255, 255, 255, 0.3);
+        inset 1px 1px 3px rgba(255, 255, 255, 0.3),
+        var(--sphere-rim-light);
     animation: screenMoonOrbit var(--orbit-duration) var(--ease-orbit) infinite;
     will-change: transform;
     pointer-events: none;
@@ -163,10 +239,8 @@ body::after {
     transform-origin: 22px 22px;
 }
 
-/* Tap en la pantalla acelera la órbita de la luna — mismo lenguaje táctil que .card */
-.screen.active:active::after {
-    animation-duration: var(--orbit-duration-fast);
-}
+/* Misma corrección que en .card: se quitó el cambio de animation-duration en :active
+   porque generaba un salto visible en la posición de la luna al tocar la pantalla. */
 
 /* ── Canvas del universo interactivo (estrellas + partículas dibujadas en JS) ── */
 #universe-canvas {
@@ -179,3 +253,22 @@ body::after {
     pointer-events: none;
     opacity: 0.7;
 }
+
+/* ==========================================================
+   NOTA: se removieron por completo ".deco-planet--pink" y las nebulosas
+   CSS (".cosmic-nebula", ".nebula-purple", ".nebula-blue"), junto con la
+   regla inválida "body::marker" (::marker no aplica a <body>, era código
+   muerto).
+
+   Motivo: ".nebula-purple"/".nebula-blue" aplicaban filter: blur(90px)
+   sobre círculos de 650px/550px. Ese nivel de blur es muy costoso, y en
+   motores de renderizado con soporte limitado de "filter" (wallpaper
+   engines, GPUs de gama baja, vistas en segundo plano) el navegador no
+   logra suavizar el degradado y lo pinta como bloques/manchas — el
+   patrón de "blobs" que se veía en pantalla. El planeta rosa se quitó
+   junto con ellas por la misma petición de limpieza visual.
+
+   El equivalente ambiental (nebulosas de fondo, tono púrpura/azul) sigue
+   presente de forma más barata vía "--cosmic-bg" en 02-variables.css y
+   los gradientes de 03-global.css / body, sin necesitar filter:blur.
+========================================================== */

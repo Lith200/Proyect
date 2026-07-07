@@ -11,6 +11,7 @@
 
     /* Degradado cósmico unificado — usado por body y pantallas que lo necesiten */
     --cosmic-bg:
+        radial-gradient(ellipse 55% 40% at 22% 85%, rgba(255, 107, 157, 0.1) 0%, transparent 60%),
         radial-gradient(ellipse 120% 80% at 50% 0%, var(--nebula-purple) 0%, transparent 55%),
         radial-gradient(ellipse 90% 60% at 80% 90%, var(--cosmic-blue-glow) 0%, transparent 50%),
         radial-gradient(ellipse 70% 50% at 10% 70%, rgba(45, 18, 77, 0.35) 0%, transparent 45%),
@@ -56,11 +57,36 @@
     --shadow-glow: rgba(199, 125, 255, 0.35);
     --star-glow: rgba(255, 255, 255, 0.5);
 
-    /* ── Planetas y lunas (gradientes esféricos con luz lateral) ── */
-    --planet-purple: radial-gradient(circle at 32% 28%, #9b6fd4 0%, #5a2d82 38%, #2d124d 68%, #0b0b1a 100%);
-    --planet-pink: radial-gradient(circle at 35% 30%, #ff9ecf 0%, #c44d8a 42%, #5a1a4a 72%, #0b0b1a 100%);
-    --planet-blue: radial-gradient(circle at 30% 25%, #7eb8ff 0%, #3a5a9e 40%, #11112e 70%, #0b0b1a 100%);
-    --moon-surface: radial-gradient(circle at 38% 32%, #e8e4f0 0%, #a89bb8 45%, #5a5068 100%);
+    /* ── Planetas y lunas: estilo ilustración vectorial (vetas, cráteres, contorno definido) ── */
+    --planet-purple:
+        radial-gradient(circle at 26% 22%, rgba(255, 255, 255, 0.65) 0%, transparent 9%),
+        conic-gradient(from 210deg at 42% 58%,
+            rgba(255, 255, 255, 0.16) 0deg, transparent 35deg,
+            rgba(255, 255, 255, 0.1) 90deg, transparent 130deg,
+            rgba(15, 5, 25, 0.28) 190deg, transparent 250deg,
+            rgba(255, 255, 255, 0.14) 310deg, transparent 360deg),
+        radial-gradient(circle at 32% 28%, #c9a6f2 0%, #a674e0 26%, #7b4bc4 50%, #4d2489 74%, #22103f 100%);
+    --planet-pink:
+        radial-gradient(circle at 26% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 9%),
+        radial-gradient(circle at 58% 26%, rgba(255, 255, 255, 0.14) 0%, transparent 12%),
+        radial-gradient(circle at 24% 58%, rgba(120, 20, 68, 0.42) 0%, transparent 18%),
+        radial-gradient(circle at 66% 66%, rgba(120, 20, 68, 0.36) 0%, transparent 16%),
+        radial-gradient(circle at 44% 46%, rgba(120, 20, 68, 0.3) 0%, transparent 13%),
+        radial-gradient(circle at 35% 30%, #ffb8dd 0%, #ff85bd 26%, #dd5591 50%, #8f2f5c 76%, #3d1529 100%);
+    --planet-blue:
+        radial-gradient(circle at 24% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 9%),
+        linear-gradient(105deg, transparent 40%, rgba(220, 235, 255, 0.4) 46%, rgba(180, 210, 255, 0.5) 50%, rgba(220, 235, 255, 0.35) 54%, transparent 60%),
+        radial-gradient(circle at 30% 25%, #b8dcff 0%, #7eb8ff 24%, #3a5a9e 50%, #182456 76%, #060814 100%);
+    --moon-surface:
+        radial-gradient(circle at 30% 24%, rgba(0, 0, 0, 0.34) 0%, transparent 9%),
+        radial-gradient(circle at 62% 55%, rgba(0, 0, 0, 0.3) 0%, transparent 11%),
+        radial-gradient(circle at 46% 72%, rgba(0, 0, 0, 0.24) 0%, transparent 8%),
+        radial-gradient(circle at 38% 32%, #f2eef8 0%, #e8e4f0 32%, #a89bb8 62%, #5a5068 100%);
+
+    /* Aro de luz fino en el borde iluminado — da volumen real de esfera, no de sticker plano */
+    --sphere-rim-light: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+    /* Contorno oscuro sutil — separa el planeta del fondo cósmico, look de ilustración vectorial */
+    --planet-outline-stroke: 0 0 0 1.5px rgba(10, 4, 20, 0.4);
 
     /* Tamaños base de cuerpos celestes (referenciados por 03-global.css y 05-universe.css) */
     --planet-size-card: 52px;
@@ -75,6 +101,10 @@
     --float-duration: 5s;
     --orbit-duration: 14s;
     --orbit-duration-fast: 3s;
+
+    /* Desplazamiento de parallax del fondo cósmico — 04-universe.js lo actualiza
+       en cada scroll de pantalla; por defecto 0px (sin JS, no pasa nada raro) */
+    --parallax-y: 0px;
 
     /* ── Mobile-first spacing ── */
     --card-radius: 24px;

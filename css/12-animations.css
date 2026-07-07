@@ -10,16 +10,104 @@
     50% { opacity: 1; }
 }
 
-/* Rotación esférica 3D del planeta (tarjetas) */
+/* Rotación del planeta (tarjetas) — giro Z continuo (nunca se aplana) + balanceo 3D acotado a ±8°,
+   evita que la esfera se vea "de canto" al pasar por los 90°/270° de una rotación Y completa */
 @keyframes planetSpin {
-    0% { transform: rotate3d(0, 1, 0.3, 0deg); }
-    100% { transform: rotate3d(0, 1, 0.3, 360deg); }
+    0%   { transform: rotate3d(0.3, 1, 0.15, -8deg) rotate(0deg); }
+    50%  { transform: rotate3d(0.3, 1, 0.15, 8deg) rotate(180deg); }
+    100% { transform: rotate3d(0.3, 1, 0.15, -8deg) rotate(360deg); }
 }
 
-/* Rotación esférica 3D del planeta (fondo de pantalla completa) */
+/* Rotación del planeta de fondo — mismo principio, balanceo más sutil (±6°) por ser más grande y visible.
+   Incluye translateY(var(--parallax-y)) para que 04-universe.js pueda desplazarlo sutilmente
+   al hacer scroll, sin pelear con el giro (la variable cae en 0px si nadie la actualiza). */
 @keyframes planetSpin3d {
-    0% { transform: rotate3d(0.2, 1, 0.1, 0deg); }
-    100% { transform: rotate3d(0.2, 1, 0.1, 360deg); }
+
+    0% {
+        transform:
+            translateY(calc(var(--parallax-y, 0px) + 0px))
+            rotate3d(0.15, 1, 0.05, -6deg)
+            rotate(0deg);
+    }
+
+    25% {
+        transform:
+            translateY(calc(var(--parallax-y, 0px) - 2px))
+            rotate3d(0.15, 1, 0.05, -2deg)
+            rotate(90deg);
+    }
+
+    50% {
+        transform:
+            translateY(calc(var(--parallax-y, 0px) - 5px))
+            rotate3d(0.15, 1, 0.05, 6deg)
+            rotate(180deg);
+    }
+
+    75% {
+        transform:
+            translateY(calc(var(--parallax-y, 0px) - 2px))
+            rotate3d(0.15, 1, 0.05, 2deg)
+            rotate(270deg);
+    }
+
+    100% {
+        transform:
+            translateY(calc(var(--parallax-y, 0px) + 0px))
+            rotate3d(0.15, 1, 0.05, -6deg)
+            rotate(360deg);
+    }
+
+}
+
+/* Variante de planetSpin3d para elementos que se auto-centran con translate(-50%,-50%)
+   (como el planeta azul dentro de .deco-planet-group): sin este keyframe dedicado,
+   la animación infinita sobreescribe el transform en cada fotograma y el centrado
+   se pierde — esa fue la causa real del desalineamiento del anillo.
+   No lleva parallax propio: .deco-planet-group (el padre) ya lo aplica en su
+   propio transform, así que duplicarlo aquí lo movería el doble de la cuenta. */
+@keyframes planetSpin3dCentered {
+
+    0% {
+        transform:
+            translate(-50%, -50%)
+            translateY(0px)
+            rotate3d(0.15,1,0.05,-6deg)
+            rotate(0deg);
+    }
+
+    25% {
+        transform:
+            translate(-50%, -50%)
+            translateY(-2px)
+            rotate3d(0.15,1,0.05,-2deg)
+            rotate(90deg);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%)
+            translateY(-5px)
+            rotate3d(0.15,1,0.05,6deg)
+            rotate(180deg);
+    }
+
+    75% {
+        transform:
+            translate(-50%, -50%)
+            translateY(-2px)
+            rotate3d(0.15,1,0.05,2deg)
+            rotate(270deg);
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            translateY(0px)
+            rotate3d(0.15,1,0.05,-6deg)
+            rotate(360deg);
+    }
+
 }
 
 /* Órbita lunar alrededor del planeta de tarjeta */
@@ -137,3 +225,30 @@
     animation: roseWiggleNew 1.8s ease-in-out infinite alternate;
     will-change: transform;
 }
+
+/* ══════════════════════════════════════
+   COMETAS OCASIONALES
+   ══════════════════════════════════════
+   Cruzan la pantalla una vez cada varios segundos y desaparecen el resto
+   del ciclo (la mayor parte del keyframe el cometa está fuera de pantalla
+   y con opacidad 0 — por eso "ocasional" y no un elemento siempre visible). */
+
+@keyframes cometFly1 {
+    0%   { transform: translate(-15vw, -15vh) rotate(-32deg); opacity: 0; }
+    2%   { opacity: 1; }
+    16%  { transform: translate(70vw, 62vh) rotate(-32deg); opacity: 1; }
+    20%  { opacity: 0; }
+    100% { opacity: 0; transform: translate(70vw, 62vh) rotate(-32deg); }
+}
+
+@keyframes cometFly2 {
+    0%   { transform: translate(115vw, -12vh) rotate(28deg); opacity: 0; }
+    2%   { opacity: 1; }
+    15%  { transform: translate(20vw, 58vh) rotate(28deg); opacity: 1; }
+    19%  { opacity: 0; }
+    100% { opacity: 0; transform: translate(20vw, 58vh) rotate(28deg); }
+}
+
+/* NOTA: se removieron los keyframes "nebulaFloatPurple" y "nebulaFloatBlue" —
+   pertenecían a las nebulosas CSS (.cosmic-nebula) eliminadas en 05-universe.css
+   por causar artefactos de bloques/manchas (filter: blur pesado mal soportado). */

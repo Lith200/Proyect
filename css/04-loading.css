@@ -1,55 +1,79 @@
-/* 04-loading.css — Pantalla de carga cósmica */
+/* 04-loading.css — Pantalla de carga inicial
+   NOTA: este archivo, tal como venía en el proyecto, contenía código
+   JavaScript (la lógica de parallax que en realidad ya vive en
+   04-universe.js), no CSS. Al enlazarse como <link rel="stylesheet">,
+   el navegador simplemente lo ignoraba por no ser CSS válido — así que
+   la pantalla de carga (#screen-loading) nunca tuvo estilos reales:
+   el corazón no pulsaba con su animación, la barra de progreso no tenía
+   forma ni color, y el texto no tenía tipografía/tamaño definidos.
+   Se reconstruye aquí usando las variables ya establecidas en
+   02-variables.css y el keyframe "heartBeatLoading" ya definido en
+   12-animations.css (que hasta ahora nadie usaba). */
+
 #screen-loading {
-    background: transparent;
-    z-index: 100;
+    background: var(--cosmic-bg);
 }
 
 .loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    position: relative;
-    z-index: 10;
-    padding: 32px 24px;
-    background: var(--glass-bg);
-    border: 0.5px solid var(--glass-border);
-    border-radius: var(--card-radius);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: 0 8px 32px var(--shadow-cosmic);
-    animation: zeroGravityFloat var(--float-duration) ease-in-out infinite;
-    will-change: transform;
+    width: 100%;
+    max-width: 320px;
+    padding: 20px;
 }
 
 .pulsing-heart {
-    font-size: 4.5rem;
-    animation: heartBeatLoading 1.2s infinite ease-in-out;
-    margin-bottom: 20px;
-    display: inline-block;
-    will-change: transform;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 26px;
+    animation: heartBeatLoading 1.4s ease-in-out infinite;
+    will-change: transform, filter;
 }
 
 .loading-bar-container {
-    width: min(240px, 80vw);
+    width: 220px;
+    max-width: 70vw;
     height: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 20px;
+    border-radius: 999px;
     overflow: hidden;
-    margin: 15px auto;
-    border: 0.5px solid var(--glass-border);
+    background: var(--glass-track-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+    margin-bottom: 18px;
 }
 
 .loading-bar {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, var(--primary-love), var(--accent-rose), var(--accent-gold));
-    border-radius: 20px;
-    transition: width 0.1s linear;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primary-love), var(--accent-rose));
     box-shadow: 0 0 12px var(--shadow-glow);
+    transition: width 0.25s ease-out;
 }
 
 .loading-text {
     font-size: 0.9rem;
     color: var(--text-muted);
-    font-style: italic;
-    min-height: 20px;
+    letter-spacing: 0.01em;
     line-height: 1.5;
+    min-height: 1.5em;
+}
+
+/* ── Escritorio / pantallas grandes ── */
+@media (min-width: 768px) {
+    .pulsing-heart {
+        font-size: 4.6rem;
+        margin-bottom: 32px;
+    }
+
+    .loading-bar-container {
+        width: 280px;
+    }
+
+    .loading-text {
+        font-size: 1rem;
+    }
 }

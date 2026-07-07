@@ -25,6 +25,30 @@
 
 <body>
 
+    <!-- Decoración cósmica de fondo: planetas reales en el DOM (no pseudo-elementos)
+         para poder lograr un anillo que pasa físicamente detrás y delante del planeta -->
+    <div class="cosmic-decor" aria-hidden="true">
+
+        <!-- Nebulosas -->
+        <div class="cosmic-nebula nebula-purple"></div>
+        <div class="cosmic-nebula nebula-blue"></div>
+
+        <!-- Planeta Rosa -->
+        <div class="deco-planet deco-planet--pink"></div>
+
+        <!-- Planeta Azul -->
+        <div class="deco-planet-group">
+
+            <span class="deco-ring deco-ring--back"></span>
+
+            <div class="deco-planet deco-planet--blue"></div>
+
+            <span class="deco-ring deco-ring--front"></span>
+
+        </div>
+
+    </div>
+
     <!-- Fondo de estrellas e interactivo cósmico -->
     <canvas id="universe-canvas"></canvas>
     <canvas id="particles-canvas"></canvas>
@@ -32,8 +56,8 @@
 
     <!-- Audio Local Escondido -->
     <audio id="local-audio" loop>
-        <source src="assets/music/musica.m4a" type="audio/mp3">
-        <source src="musica.m4a" type="audio/mp3">
+        <source src="assets/music/Love For You.m4a" type="audio/mp3">
+        <source src="Love For You.m4a" type="audio/mp3">
     </audio>
 
     <!-- Pantalla 1: Loading Preloader Inicial -->

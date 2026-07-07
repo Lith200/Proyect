@@ -2,12 +2,40 @@
 
 /* ── Fondo cósmico dinámico ── */
 body {
+
     position: relative;
-    color: var(--text-main);
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
-    background: var(--cosmic-bg);
+
+    overflow: hidden;
+
+    color: var(--text-main);
+
+    background:
+
+        radial-gradient(circle at 50% 35%,
+            rgba(96, 72, 180, .12) 0%,
+            rgba(56, 35, 110, .08) 18%,
+            transparent 42%),
+
+        radial-gradient(circle at 15% 80%,
+            rgba(35, 90, 180, .08) 0%,
+            transparent 35%),
+
+        radial-gradient(circle at 90% 15%,
+            rgba(255, 150, 210, .05) 0%,
+            transparent 28%),
+
+        linear-gradient(180deg,
+            #060713 0%,
+            #050816 35%,
+            #03040C 70%,
+            #010205 100%);
+
 }
 
 /* ── Pantallas ── */
@@ -52,52 +80,13 @@ body {
     perspective: 800px;
 }
 
-/* Planeta decorativo en cada tarjeta — esfera con luz lateral simulada vía inset shadows */
-.card::before {
-    content: '';
-    position: absolute;
-    width: var(--planet-size-card);
-    height: var(--planet-size-card);
-    border-radius: 50%;
-    bottom: -18px;
-    left: -14px;
-    background: var(--planet-purple);
-    box-shadow:
-        inset -10px -6px 18px rgba(0, 0, 0, 0.65),
-        inset 6px 6px 14px rgba(255, 255, 255, 0.12),
-        0 0 28px var(--nebula-glow);
-    animation: planetSpin 28s var(--ease-orbit) infinite;
-    will-change: transform;
-    pointer-events: auto;
-    z-index: -1;
-}
-
-/* Luna en órbita alrededor del planeta de la tarjeta */
-.card::after {
-    content: '';
-    position: absolute;
-    width: var(--moon-size-card);
-    height: var(--moon-size-card);
-    border-radius: 50%;
-    bottom: 8px;
-    left: 10px;
-    background: var(--moon-surface);
-    box-shadow:
-        inset -3px -2px 6px rgba(0, 0, 0, 0.4),
-        inset 2px 2px 4px rgba(255, 255, 255, 0.35),
-        0 0 10px rgba(255, 255, 255, 0.2);
-    animation: moonOrbit var(--orbit-duration) var(--ease-orbit) infinite;
-    will-change: transform;
-    pointer-events: none;
-    z-index: -1;
-    /* Origen de órbita centrado respecto al planeta (mitad del planeta + radio orbital) */
-    transform-origin: 26px -8px;
-}
-
-/* Tap en la tarjeta acelera la órbita lunar — feedback táctil inmediato */
-.card:active::after {
-    animation-duration: var(--orbit-duration-fast);
-}
+/* NOTA: se removieron ".card::before" (planeta) y ".card::after" (luna),
+   junto con ".card:active::after". Motivo: cambiar "animation-duration" de
+   una animación en pleno vuelo (como hacía ":active" sobre la luna) obliga
+   al navegador a recalcular su posición en la órbita con la nueva duración,
+   y eso se ve como un salto brusco — exactamente el "la luna se mueve de
+   lugar" al tocar el cuadro de texto (.letter-box está dentro de .card,
+   así que cualquier tap ahí disparaba :active en la tarjeta completa). */
 
 .card:active {
     animation-play-state: paused;
@@ -166,4 +155,30 @@ body {
 .proposal-question {
     font-family: var(--font-display);
     text-shadow: var(--text-shadow-star);
+}
+
+/* ==========================================================
+   CINEMATIC VIGNETTE
+========================================================== */
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    background:
+
+        radial-gradient(circle,
+            transparent 52%,
+            rgba(2, 3, 10, .08) 68%,
+            rgba(2, 3, 10, .28) 82%,
+            rgba(2, 3, 10, .55) 100%);
+
 }

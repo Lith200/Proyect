@@ -1,59 +1,194 @@
-/* 09-game.js */
+/* ==========================================================
+   09-game.js
+   PROJECT MOON
+   Game Director
+========================================================== */
+
 (() => {
-    window.GameState = {
+
+    const GameState = {
+
         score: 0,
-        targetScore: 15, // Puntos necesarios para ganar
+
+        targetScore: 15,
+
+        isRunning: false,
+
         isGameOver: false,
-        
-        reset() {
-            this.score = 0;
+
+        isTransitioning: false,
+
+        canInteract: false,
+
+        memoriesCollected: 0,
+
+        starsUnlocked: 0,
+
+        /* -------------------------------------- */
+        /* INICIO DEL JUEGO                       */
+        /* -------------------------------------- */
+
+        start() {
+
+            this.isRunning = true;
             this.isGameOver = false;
-            
-            const scoreLabel = document.getElementById("game-score");
-            const progressBar = document.querySelector(".game-progress-bar");
-            
-            if (scoreLabel) scoreLabel.innerText = `Puntos: 0 / ${this.targetScore} 💕`;
-            if (progressBar) progressBar.style.width = "0%";
+            this.isTransitioning = false;
+            this.canInteract = true;
+
         },
-        
+
+        stop() {
+
+            this.isRunning = false;
+            this.canInteract = false;
+
+        },
+
+        /* -------------------------------------- */
+        /* REINICIAR                             */
+        /* -------------------------------------- */
+
+        reset() {
+
+            this.score = 0;
+
+            this.memoriesCollected = 0;
+
+            this.starsUnlocked = 0;
+
+            this.isGameOver = false;
+
+            this.isTransitioning = false;
+
+            this.updateHUD();
+
+        },
+
+        /* -------------------------------------- */
+        /* SUMAR PUNTO                           */
+        /* -------------------------------------- */
+
         addPoint() {
+
+            if (!this.canInteract) return;
+
             if (this.isGameOver) return;
-            
+
             this.score++;
-            
-            const scoreLabel = document.getElementById("game-score");
-            const progressBar = document.querySelector(".game-progress-bar");
-            
-            // Actualizamos la interfaz
-            if (scoreLabel) scoreLabel.innerText = `Puntos: ${this.score} / ${this.targetScore} 💕`;
-            if (progressBar) {
-                const percentage = (this.score / this.targetScore) * 100;
-                progressBar.style.width = `${percentage}%`;
-            }
-            
-            // Si llega a la meta, gana y avanza automáticamente
+
+            this.memoriesCollected++;
+
+            this.unlockStar();
+
+            this.updateHUD();
+
             if (this.score >= this.targetScore) {
-                this.winGame();
+
+                this.finish();
+
             }
+
         },
-        
-        winGame() {
+
+        /* -------------------------------------- */
+        /* DESBLOQUEAR ESTRELLA                  */
+        /* -------------------------------------- */
+
+        unlockStar() {
+
+            this.starsUnlocked++;
+
+            // Próximamente:
+            // Universe.flash()
+            // Particles.spawn()
+            // Audio.play()
+
+        },
+
+        /* -------------------------------------- */
+        /* ACTUALIZAR INTERFAZ                   */
+        /* -------------------------------------- */
+
+        updateHUD() {
+
+            const scoreLabel =
+                document.getElementById("game-score");
+
+            const progressBar =
+                document.querySelector(".game-progress-bar");
+
+            if (scoreLabel) {
+
+                scoreLabel.innerText =
+                    `Fragmentos encontrados: ${this.score} / ${this.targetScore}`;
+
+            }
+
+            if (progressBar) {
+
+                progressBar.style.width =
+                    `${(this.score / this.targetScore) * 100}%`;
+
+            }
+
+        },
+
+        /* -------------------------------------- */
+        /* FINAL                                 */
+        /* -------------------------------------- */
+
+        finish() {
+
+            if (this.isTransitioning) return;
+
             this.isGameOver = true;
-            
-            // Pequeña pausa dramática de victoria y saltamos a la propuesta final
+
+            this.canInteract = false;
+
+            this.isTransitioning = true;
+
+            this.playEnding();
+
+        },
+
+        /* -------------------------------------- */
+        /* CINEMÁTICA FINAL                      */
+        /* -------------------------------------- */
+
+        playEnding() {
+
             setTimeout(() => {
+
                 if (typeof window.navigateToScreen === "function") {
+
                     window.navigateToScreen("screen-proposal");
+
                 }
-            }, 800);
+
+            }, 1200);
+
         }
+
     };
 
-    // Función global que se activa al entrar a la pantalla del juego
-    window.initGame = function() {
-        window.GameState.reset();
+    /* ======================================================
+       API Pública
+    ====================================================== */
+
+    window.GameState = GameState;
+
+    window.initGame = function () {
+
+        GameState.reset();
+
+        GameState.start();
+
         if (typeof window.startGameCanvas === "function") {
+
             window.startGameCanvas();
+
         }
+
     };
+
 })();
