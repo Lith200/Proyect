@@ -9,7 +9,6 @@
     let constellations = [];
     let dust = [];
     let cosmicDust = [];
-    let nebulas = []; // FIX: declaración explícita (antes era global implícita)
     let canvas = null;
     /* ==========================================================
        STAR TYPES
@@ -34,38 +33,6 @@
             glow: true
         }
     };
-    /* ==========================================================
-       NEBULAS
-       Paleta ampliada tipo "cielo anime" (rosa/lavanda/cian/dorado) en vez
-       de solo violeta/azul, y cada nebulosa "respira" en opacidad además
-       de desplazarse — así el fondo se siente vivo, no un fondo pintado
-       una sola vez y quieto.
-    ========================================================== */
-    const NEBULA_COLORS = [
-        "rgba(170,130,255,0.10)",
-        "rgba(100,190,255,0.08)",
-        "rgba(255,140,205,0.09)",
-        "rgba(255,215,150,0.06)",
-        "rgba(190,150,255,0.08)"
-    ];
-
-    function createNebulas(){
-        nebulas = [];
-        const total = window.innerWidth < 768 ? 4 : 7;
-
-        for(let i = 0; i < total; i++){
-            nebulas.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 260 + 200,
-                color: NEBULA_COLORS[Math.floor(Math.random() * NEBULA_COLORS.length)],
-                offset: Math.random() * Math.PI * 2,
-                speed: Math.random() * 0.00015 + 0.00005,
-                breathPhase: Math.random() * Math.PI * 2,
-                breathSpeed: Math.random() * 0.0006 + 0.0003
-            });
-        }
-    }
 
     /* ==========================================================
        COSMIC DUST (BASE DRIFT LAYER)
@@ -143,13 +110,20 @@
 
     /* ==========================================================
        INIT
+       NOTA: se removió por completo el sistema de "nebulosas" en canvas
+       (createNebulas/drawNebulas). Igual que pasó antes con las nebulosas
+       en CSS (filter:blur pesado), estos degradados radiales grandes se
+       renderizaban como manchas de color que aparecían y desaparecían de
+       golpe en vez de un glow suave — el mismo tipo de problema de
+       renderizado, ahora en canvas. Se quita en vez de parchear, ya que
+       el fondo se ve limpio sin él (estrellas + polvo cósmico + planetas
+       ya aportan suficiente atmósfera).
     ========================================================== */
     window.initStars = function () {
         stars = [];
         canvas = document.getElementById("universe-canvas");
         if (!canvas) return;
 
-        createNebulas();
         createDust();
 
         const isMobile = window.innerWidth < 768;
@@ -192,10 +166,6 @@
 
     /* ==========================================================
        UPDATE
-       NOTA: el sistema de "estrella fugaz" simple (línea recta con
-       cooldown aleatorio) que vivía aquí se removió — quedaba duplicado
-       y visualmente más pobre que el nuevo cometa de partículas de
-       14-comets.js, que ahora es el único sistema de cometas del proyecto.
     ========================================================== */
     function update() {
         const time = window.Universe?.time || 0;
@@ -243,38 +213,6 @@
     /* ==========================================================
        DRAW
     ========================================================== */
-    function drawNebulas(ctx){
-        nebulas.forEach(n => {
-            n.offset += n.speed;
-            n.breathPhase += n.breathSpeed;
-
-            const x = n.x + Math.cos(n.offset) * 20;
-            const y = n.y + Math.sin(n.offset) * 20;
-
-            // Respiración suave de opacidad (0.75–1.15 del valor base) — evita
-            // que la nebulosa se sienta como un fondo pintado y estático
-            const breath = 0.75 + (Math.sin(n.breathPhase) + 1) * 0.2;
-
-            const gradient = ctx.createRadialGradient(
-                x, y, 0,
-                x, y, n.radius
-            );
-
-            gradient.addColorStop(0, n.color);
-            gradient.addColorStop(1, "rgba(0,0,0,0)");
-
-            ctx.save();
-            ctx.globalAlpha = breath;
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(x, y, n.radius, 0, Math.PI * 2);
-
-            ctx.globalCompositeOperation = "screen";
-            ctx.fill();
-            ctx.restore();
-        });
-    }
-
     function drawDust(ctx){
         dust.forEach(p => {
             p.x += p.driftX * p.depth;
@@ -301,9 +239,8 @@
     }
 
     function draw(ctx) {
-        // Render en orden de profundidad: Nebulas → Dust Base → Constellations → Cosmic Dust → Stars
+        // Render en orden de profundidad: Dust Base → Constellations → Cosmic Dust → Stars
         // (el cometa de partículas se dibuja aparte, en 14-comets.js, como su propia capa)
-        drawNebulas(ctx);
         drawDust(ctx);
 
         // Constelaciones estáticas
@@ -364,10 +301,6 @@
     document.addEventListener("DOMContentLoaded", () => {
         window.initStars();
 
-        // FIX: el método correcto expuesto por window.Universe es
-        // "registerElement" (04-universe.js), no "registerLayer".
-        // Con el nombre equivocado, starsLayer nunca se registraba
-        // y todo el canvas de estrellas/nebulosas quedaba sin dibujarse.
         if (window.Universe && typeof window.Universe.registerElement === "function") {
             window.Universe.registerElement(starsLayer);
         }

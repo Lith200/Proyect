@@ -32,15 +32,37 @@
          con soporte limitado de filter:blur (ver 05-universe.css). -->
     <div class="cosmic-decor" aria-hidden="true">
 
-        <!-- Planeta Azul -->
+        <!-- Planeta protagonista (referencia: anillo grueso + tonos rosa/magenta) -->
         <div class="deco-planet-group">
+
+            <!-- Anillo radar HUD: marca el planeta como "objeto rastreado" -->
+            <span class="deco-radar-ring"></span>
 
             <span class="deco-ring deco-ring--back"></span>
 
-            <div class="deco-planet deco-planet--blue"></div>
+            <div class="deco-planet deco-planet--hero">
+                <span class="planet-grain"></span>
+                <span class="planet-highlight"></span>
+            </div>
 
             <span class="deco-ring deco-ring--front"></span>
 
+            <!-- Lunita compañera, como en la referencia (imagen 6) -->
+            <span class="deco-companion-moon"></span>
+
+        </div>
+
+        <!-- Planeta ancla (solo visible en Intro/Propuesta vía :has() en CSS):
+             mismo nivel de detalle que el protagonista — anillo propio, grano,
+             brillo especular y una luna que viaja sobre la elipse real del anillo. -->
+        <div class="anchor-planet-group" aria-hidden="true">
+            <span class="anchor-ring anchor-ring--back"></span>
+            <div class="anchor-planet">
+                <span class="planet-grain"></span>
+                <span class="planet-highlight"></span>
+            </div>
+            <span class="anchor-ring anchor-ring--front"></span>
+            <span class="anchor-moon"></span>
         </div>
 
     </div>
@@ -58,12 +80,39 @@
 
     <!-- Pantalla 1: Loading Preloader Inicial -->
     <div class="screen active" id="screen-loading">
+
+        <!-- Sol y luna kawaii — decoración de la carga, día/noche flanqueando el mensaje -->
+        <div class="loader-sun" aria-hidden="true">
+            <span class="kawaii-face">
+                <span class="kawaii-eye kawaii-eye--left"></span>
+                <span class="kawaii-eye kawaii-eye--right"></span>
+                <span class="kawaii-blush kawaii-blush--left"></span>
+                <span class="kawaii-blush kawaii-blush--right"></span>
+                <span class="kawaii-mouth"></span>
+            </span>
+        </div>
+        <div class="loader-moon" aria-hidden="true">
+            <span class="kawaii-crater kawaii-crater--1"></span>
+            <span class="kawaii-crater kawaii-crater--2"></span>
+            <span class="kawaii-crater kawaii-crater--3"></span>
+            <span class="kawaii-face">
+                <span class="kawaii-eye kawaii-eye--left"></span>
+                <span class="kawaii-eye kawaii-eye--right"></span>
+                <span class="kawaii-blush kawaii-blush--left"></span>
+                <span class="kawaii-blush kawaii-blush--right"></span>
+                <span class="kawaii-mouth"></span>
+            </span>
+        </div>
+
         <div class="loader-content">
             <div class="pulsing-heart">💖</div>
             <div class="loading-bar-container">
                 <div class="loading-bar" id="initial-load-bar"></div>
             </div>
-            <p class="loading-text" id="loading-text-hint">Cargando un pedacito de mi corazón...</p>
+            <div class="loading-meta">
+                <p class="loading-text" id="loading-text-hint">Cargando un pedacito de mi corazón...</p>
+                <span class="loading-percent" id="loading-percent">0%</span>
+            </div>
         </div>
     </div>
 
@@ -184,6 +233,7 @@
     <script src="js/12-effects.js"></script>
     <script src="js/13-cursor.js"></script>
     <script src="js/14-comets.js"></script>
+    <script src="js/15-blackhole.js"></script>
 </body>
 
 </html>

@@ -58,14 +58,19 @@ body {
     display: flex;
 }
 
-/* ── Tarjetas visor espacial ── */
+/* ── Tarjetas: panel de consola ──
+   Se quitaron las esquinas tipo "visor de mira" (líneas cian duras en las
+   4 esquinas) y la línea de escaneo al entrar — se sentían demasiado
+   técnicas encima del vidrio. Se conserva una sombra interior más
+   trabajada para dar profundidad real al panel, sin ningún efecto extra. */
 .card {
     background: var(--glass-bg);
     border: 0.5px solid var(--glass-border);
     border-radius: var(--card-radius);
     box-shadow:
         0 8px 32px var(--shadow-cosmic),
-        inset 0 1px 0 var(--glass-highlight);
+        inset 0 1px 0 var(--glass-highlight),
+        inset 0 -28px 46px rgba(0, 0, 0, 0.22);
     padding: var(--card-padding);
     width: 100%;
     max-width: var(--card-max-width);
@@ -78,15 +83,8 @@ body {
     animation: zeroGravityFloat var(--float-duration) ease-in-out infinite;
     transform-style: preserve-3d;
     perspective: 800px;
+    overflow: hidden;
 }
-
-/* NOTA: se removieron ".card::before" (planeta) y ".card::after" (luna),
-   junto con ".card:active::after". Motivo: cambiar "animation-duration" de
-   una animación en pleno vuelo (como hacía ":active" sobre la luna) obliga
-   al navegador a recalcular su posición en la órbita con la nueva duración,
-   y eso se ve como un salto brusco — exactamente el "la luna se mueve de
-   lugar" al tocar el cuadro de texto (.letter-box está dentro de .card,
-   así que cualquier tap ahí disparaba :active en la tarjeta completa). */
 
 .card:active {
     animation-play-state: paused;
@@ -111,12 +109,17 @@ body {
     transform: translateZ(-20px);
 }
 
-.glass-card:active::before {
-    animation-duration: 6s;
-    box-shadow:
-        inset -10px -6px 18px rgba(0, 0, 0, 0.65),
-        inset 6px 6px 14px rgba(255, 255, 255, 0.2),
-        0 0 40px var(--shadow-glow);
+/* NOTA: se removió el componente .hud-tag ("Señal entrante · 01/05", etc.)
+   por pedido explícito — ya no se usa en ninguna pantalla. */
+
+/* Íconos-emoji tratados como holográficos (glow cian de interfaz) en vez
+   de stickers planos — nunca se aplica a los títulos con sentimiento,
+   que se quedan en su brillo cálido (--text-shadow-star). */
+.card-icon,
+.heart-crown,
+.kitty-avatar,
+.pulsing-heart {
+    filter: drop-shadow(0 0 10px var(--hud-cyan-glow));
 }
 
 /* ── Botones ── */

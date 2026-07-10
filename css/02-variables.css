@@ -1,5 +1,5 @@
 /* 02-variables.css — Design tokens cósmicos */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
     /* ── Fondo espacial ── */
@@ -28,6 +28,11 @@
     --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     /* Serif elegante reservada para títulos — le da carácter "premium" sin perder legibilidad */
     --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    /* Mono técnica — SOLO para readouts de HUD (etiquetas, "TRANSMISIÓN 0X/06",
+       timestamps falsos). Contraste deliberado: serif con sentimiento para
+       títulos, mono técnica para "datos de consola" — esa es la firma
+       tipográfica del rediseño HUD. */
+    --font-mono: 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
     --text-main: rgba(240, 235, 255, 0.92);
     --text-muted: rgba(200, 190, 230, 0.75);
     --text-dark: rgba(255, 255, 255, 0.88);
@@ -40,6 +45,16 @@
     --text-shadow-star:
         0 0 6px rgba(255, 255, 255, 0.3),
         0 0 16px rgba(199, 125, 255, 0.18);
+
+    /* ── Sistema HUD (consola de nave) ──
+       Cian eléctrico como único color de "chrome de interfaz" — nunca se
+       usa en contenido emocional (títulos, texto de la carta), solo en
+       marcos, líneas de escaneo, radares y readouts técnicos. Frío
+       (interfaz) vs. cálido (contenido) es el contraste deliberado. */
+    --hud-cyan: #4df0ff;
+    --hud-cyan-dim: rgba(77, 240, 255, 0.4);
+    --hud-cyan-glow: rgba(77, 240, 255, 0.55);
+    --hud-text: rgba(190, 245, 255, 0.85);
 
     /* ── Visores de nave (glass) ── */
     --glass-bg: rgba(255, 255, 255, 0.06);
@@ -69,17 +84,28 @@
     --planet-purple:
         radial-gradient(circle at 30% 23%, #ffffff 0%, #ffffff 3%, transparent 7%),
         radial-gradient(circle at 34% 29%, rgba(255, 255, 255, 0.5) 0%, transparent 16%),
-        radial-gradient(circle at 68% 74%, rgba(20, 6, 40, 0.55) 0%, transparent 44%),
+        /* Manchas pintadas — variación tonal suave que simula nubes/vetas
+           acuareladas, en vez de una esfera perfectamente lisa */
+        radial-gradient(circle at 62% 18%, rgba(255, 255, 255, 0.14) 0%, transparent 20%),
+        radial-gradient(circle at 20% 52%, rgba(255, 255, 255, 0.09) 0%, transparent 18%),
+        radial-gradient(circle at 55% 58%, rgba(40, 10, 70, 0.22) 0%, transparent 24%),
+        radial-gradient(circle at 68% 74%, rgba(20, 6, 40, 0.5) 0%, transparent 44%),
         radial-gradient(circle at 34% 30%, #f3d9ff 0%, #d8a6ff 20%, #b06fee 42%, #7c3fd1 62%, #4a1f8f 82%, #24104a 100%);
     --planet-pink:
         radial-gradient(circle at 28% 20%, #ffffff 0%, #ffffff 3%, transparent 7%),
         radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5) 0%, transparent 15%),
-        radial-gradient(circle at 66% 72%, rgba(60, 8, 34, 0.5) 0%, transparent 44%),
+        radial-gradient(circle at 60% 16%, rgba(255, 255, 255, 0.14) 0%, transparent 20%),
+        radial-gradient(circle at 18% 50%, rgba(255, 255, 255, 0.09) 0%, transparent 18%),
+        radial-gradient(circle at 52% 56%, rgba(90, 10, 55, 0.2) 0%, transparent 24%),
+        radial-gradient(circle at 66% 72%, rgba(60, 8, 34, 0.46) 0%, transparent 44%),
         radial-gradient(circle at 32% 26%, #ffe3f2 0%, #ffb0da 20%, #ff74b8 42%, #e0398f 62%, #921f5c 82%, #400f29 100%);
     --planet-blue:
         radial-gradient(circle at 28% 21%, #ffffff 0%, #ffffff 3%, transparent 7%),
         radial-gradient(circle at 32% 27%, rgba(255, 255, 255, 0.45) 0%, transparent 15%),
-        radial-gradient(circle at 66% 72%, rgba(6, 10, 35, 0.55) 0%, transparent 44%),
+        radial-gradient(circle at 60% 18%, rgba(255, 255, 255, 0.13) 0%, transparent 20%),
+        radial-gradient(circle at 18% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 18%),
+        radial-gradient(circle at 52% 56%, rgba(10, 20, 70, 0.22) 0%, transparent 24%),
+        radial-gradient(circle at 66% 72%, rgba(6, 10, 35, 0.5) 0%, transparent 44%),
         radial-gradient(circle at 32% 28%, #dff1ff 0%, #9fd4ff 20%, #57aaff 42%, #2f74e0 62%, #1c3f96 82%, #0c1c4a 100%);
     --moon-surface:
         radial-gradient(circle at 28% 21%, #ffffff 0%, #ffffff 4%, transparent 8%),
@@ -87,22 +113,50 @@
         radial-gradient(circle at 40% 76%, rgba(70, 58, 92, 0.2) 0%, transparent 8%),
         radial-gradient(circle at 34% 30%, #ffffff 0%, #f1ecfb 30%, #cdbfe6 58%, #8b7aa8 100%);
 
+    /* Planeta "protagonista" (deco-planet--hero) — el de la referencia con
+       anillo grueso y brillante: bandas horizontales sutiles tipo Saturno
+       (repeating-linear-gradient) superpuestas al degradado esférico base,
+       en tonos rosa → magenta → púrpura, coherentes con la paleta romántica
+       del sitio (--accent-rose / --primary-love). Se le suman manchas
+       pintadas (mismo recurso que los otros planetas) para el look más
+       "acuarela/Ghibli" y menos degradado plano de la referencia. */
+    --planet-hero:
+        radial-gradient(circle at 30% 22%, #ffffff 0%, #ffffff 3%, transparent 7%),
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.5) 0%, transparent 16%),
+        radial-gradient(circle at 64% 20%, rgba(255, 255, 255, 0.16) 0%, transparent 22%),
+        radial-gradient(circle at 20% 54%, rgba(255, 255, 255, 0.1) 0%, transparent 18%),
+        radial-gradient(circle at 55% 60%, rgba(120, 20, 110, 0.2) 0%, transparent 24%),
+        radial-gradient(circle at 68% 74%, rgba(60, 10, 55, 0.42) 0%, transparent 46%),
+        repeating-linear-gradient(102deg,
+            rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 3px,
+            transparent 3px, transparent 13px),
+        radial-gradient(circle at 34% 30%, #ffeaf6 0%, #ffb3e0 18%, #ff74c4 36%, #d84fd6 54%, #9a45d6 72%, #4c1f8f 100%);
+
+
     /* Glow de borde por color — el "rim light" saturado tipo anime,
        se usa en box-shadow junto a --sphere-rim-light/--planet-outline-stroke */
     --rim-glow-purple: rgba(224, 150, 255, 0.55);
     --rim-glow-pink: rgba(255, 150, 205, 0.55);
     --rim-glow-blue: rgba(140, 200, 255, 0.55);
+    --rim-glow-hero: rgba(255, 140, 210, 0.6);
+
+    /* Textura granulada (referencia: ilustraciones vectoriales tipo Dribbble
+       con grano fino sobre las esferas). Es ruido puro (feTurbulence),
+       NO un blur — mucho más barato y sin el riesgo de artefactos de
+       bloques que sí tuvimos con degradados suaves grandes. Se aplica en
+       un pseudo-elemento/hijo con mix-blend-mode: overlay y opacidad baja. */
+    --grain-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'140'%20height%3D'140'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.85'%20numOctaves%3D'2'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20type%3D'matrix'%20values%3D'0%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.06%200'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
 
     /* Aro de luz fino en el borde iluminado — da volumen real de esfera, no de sticker plano */
     --sphere-rim-light: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
     /* Contorno oscuro sutil — separa el planeta del fondo cósmico, look de ilustración vectorial */
     --planet-outline-stroke: 0 0 0 1.5px rgba(10, 4, 20, 0.4);
 
-    /* Tamaños base de cuerpos celestes (referenciados por 03-global.css y 05-universe.css) */
-    --planet-size-card: 52px;
-    --planet-size-screen: 44px;
-    --moon-size-card: 14px;
-    --moon-size-screen: 10px;
+    /* NOTA: --planet-size-card/--moon-size-card (planeta+luna de tarjeta) y
+       --planet-size-screen/--moon-size-screen (sistema ancla viejo) se
+       removieron — ambos sistemas fueron reemplazados por grupos reales
+       con sus propias variables locales (--deco-hero-size en
+       .deco-planet-group, --anchor-planet-size en .anchor-planet-group). */
 
     /* ── Motion ── */
     --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);

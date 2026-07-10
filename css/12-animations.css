@@ -1,6 +1,45 @@
 /* 12-animations.css — Keyframes del cosmos */
 
 /* ══════════════════════════════════════
+   HUD — CONSOLA DE NAVE
+   ══════════════════════════════════════ */
+
+/* Giro lento del anillo radar alrededor del planeta protagonista */
+@keyframes radarSpin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ping expansivo tipo "señal prioritaria" — usado en el botón de propuesta */
+@keyframes radarPing {
+    0%   { transform: scale(1);    opacity: 0.75; }
+    100% { transform: scale(1.18); opacity: 0; }
+}
+
+/* ══════════════════════════════════════
+   SOL Y LUNA KAWAII (pantalla de carga)
+   ══════════════════════════════════════ */
+
+/* Vaivén vertical suave, como flotando sin gravedad */
+@keyframes kawaiiFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+/* Balanceo orgánico de la forma del blob — el borde irregular respira */
+@keyframes kawaiiWobble {
+    0%, 100% { border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%; }
+    50%      { border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%; }
+}
+
+/* Parpadeo ocasional — los ojos se achican brevemente cada ciclo */
+@keyframes kawaiiBlink {
+    0%, 88%, 100% { transform: scaleY(1); }
+    92%           { transform: scaleY(0.15); }
+    96%           { transform: scaleY(1); }
+}
+
+/* ══════════════════════════════════════
    CIELO: estrellas y planetas
    ══════════════════════════════════════ */
 
@@ -162,28 +201,49 @@
 @keyframes planetGlowBreathe {
     0%, 100% {
         box-shadow:
-            inset -8px -5px 14px rgba(0, 0, 0, 0.55),
-            inset 4px 4px 8px rgba(220, 190, 255, 0.16),
+            inset -8px -5px 14px rgba(20, 6, 40, 0.5),
+            inset 4px 4px 8px rgba(220, 190, 255, 0.18),
             var(--sphere-rim-light),
             var(--planet-outline-stroke),
             0 0 16px 1px var(--rim-glow-purple),
-            0 0 28px var(--nebula-glow);
+            0 0 28px rgba(150, 90, 220, 0.28);
     }
     50% {
         box-shadow:
-            inset -8px -5px 14px rgba(0, 0, 0, 0.55),
-            inset 4px 4px 8px rgba(220, 190, 255, 0.16),
+            inset -8px -5px 14px rgba(20, 6, 40, 0.5),
+            inset 4px 4px 8px rgba(220, 190, 255, 0.18),
             var(--sphere-rim-light),
             var(--planet-outline-stroke),
             0 0 26px 4px var(--rim-glow-purple),
-            0 0 42px var(--nebula-glow);
+            0 0 42px rgba(150, 90, 220, 0.4);
+    }
+}
+
+/* Flotación suave de la lunita compañera junto al planeta protagonista —
+   vaivén propio e independiente del grupo, para que no se sienta pegada */
+@keyframes companionMoonFloat {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-3px, -6px);
     }
 }
 
 /* Órbita lunar en pantalla activa */
-@keyframes screenMoonOrbit {
-    0% { transform: rotate(0deg) translateX(32px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(32px) rotate(-360deg); }
+/* Luna del sistema ancla viajando sobre la elipse real del anillo
+   (rx≈36px, ry≈7px, tilt -16°) — resuelto en 8 puntos + regreso al inicio,
+   en vez de una órbita circular genérica que no calzaría con el anillo. */
+@keyframes anchorMoonOrbitRing {
+    0%    { transform: translate(34.6px, -9.9px);  z-index: 0; }
+    12.5% { transform: translate(25.8px, -2.3px);  z-index: 0; }
+    25%   { transform: translate(1.9px, 6.7px);    z-index: 2; }
+    37.5% { transform: translate(-23.1px, 11.8px); z-index: 2; }
+    50%   { transform: translate(-34.6px, 9.9px);  z-index: 2; }
+    62.5% { transform: translate(-25.8px, 2.3px);  z-index: 2; }
+    75%   { transform: translate(-1.9px, -6.7px);  z-index: 0; }
+    87.5% { transform: translate(23.1px, -11.8px); z-index: 0; }
+    100%  { transform: translate(34.6px, -9.9px);  z-index: 0; }
 }
 
 /* ══════════════════════════════════════

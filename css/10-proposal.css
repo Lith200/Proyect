@@ -82,9 +82,23 @@
 }
 
 .btn-choice.yes {
+    position: relative;
     background: linear-gradient(135deg, var(--accent-rose) 0%, #c44d8a 100%);
     color: #fff;
     box-shadow: 0 6px 24px rgba(255, 107, 157, 0.45);
+}
+
+/* Ping HUD: anillos cian que se expanden y se desvanecen, como una señal
+   prioritaria "bloqueada" en el objetivo — el botón que sí importa. */
+.btn-choice.yes::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: inherit;
+    border: 1.5px solid var(--hud-cyan);
+    opacity: 0;
+    pointer-events: none;
+    animation: radarPing 2.2s ease-out infinite;
 }
 
 .btn-choice.yes:active {

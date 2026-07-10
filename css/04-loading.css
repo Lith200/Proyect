@@ -1,17 +1,14 @@
-/* 04-loading.css — Pantalla de carga inicial
-   NOTA: este archivo, tal como venía en el proyecto, contenía código
-   JavaScript (la lógica de parallax que en realidad ya vive en
-   04-universe.js), no CSS. Al enlazarse como <link rel="stylesheet">,
-   el navegador simplemente lo ignoraba por no ser CSS válido — así que
-   la pantalla de carga (#screen-loading) nunca tuvo estilos reales:
-   el corazón no pulsaba con su animación, la barra de progreso no tenía
-   forma ni color, y el texto no tenía tipografía/tamaño definidos.
-   Se reconstruye aquí usando las variables ya establecidas en
-   02-variables.css y el keyframe "heartBeatLoading" ya definido en
-   12-animations.css (que hasta ahora nadie usaba). */
+/* 04-loading.css — Pantalla de carga inicial */
 
+/* Antes tenía background: var(--cosmic-bg) — un fondo opaco propio que
+   tapaba TODO el universo (planeta protagonista, agujero negro, cometas,
+   nebulosa) que sí se ve detrás de las otras 5 pantallas. Se quita para
+   que la carga se sienta parte del mismo mundo desde el segundo cero,
+   en vez de mostrar un fondo genérico antes de "revelar" el universo real
+   recién en la pantalla de Intro. */
 #screen-loading {
-    background: var(--cosmic-bg);
+    position: relative;
+    overflow: hidden;
 }
 
 .loader-content {
@@ -23,6 +20,8 @@
     width: 100%;
     max-width: 320px;
     padding: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .pulsing-heart {
@@ -31,6 +30,9 @@
     margin-bottom: 26px;
     animation: heartBeatLoading 1.4s ease-in-out infinite;
     will-change: transform, filter;
+    /* Mismo glow holográfico que .card-icon/.heart-crown — consistente con
+       el resto de íconos-emoji del sitio, en vez de verse plano */
+    filter: drop-shadow(0 0 10px var(--hud-cyan-glow));
 }
 
 .loading-bar-container {
@@ -42,7 +44,7 @@
     background: var(--glass-track-bg);
     border: 1px solid var(--glass-border);
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 
 .loading-bar {
@@ -54,12 +56,206 @@
     transition: width 0.25s ease-out;
 }
 
+.loading-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .loading-text {
     font-size: 0.9rem;
     color: var(--text-muted);
     letter-spacing: 0.01em;
     line-height: 1.5;
     min-height: 1.5em;
+}
+
+/* Contador de porcentaje — en la mono técnica, como un readout real de
+   sistema cargando, no solo el texto descriptivo */
+.loading-percent {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--hud-text);
+    letter-spacing: 0.03em;
+    min-width: 2.6em;
+}
+
+/* ══════════════════════════════════════
+   SOL Y LUNA KAWAII
+   Decoración propia (no reproduce ningún personaje existente): un blob
+   orgánico con carita simple, sol cálido a un lado y luna fría al otro,
+   como si la carga transcurriera entre el día y la noche. Flotan con
+   vaivén propio y parpadean de vez en cuando para sentirse vivos.
+   ══════════════════════════════════════ */
+
+.loader-sun,
+.loader-moon {
+    position: absolute;
+    top: 14%;
+    width: 64px;
+    height: 64px;
+    /* Forma de blob orgánico, no un círculo perfecto — le da el aire
+       "achochado"/tierno de la referencia en vez de un ícono geométrico */
+    border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.loader-sun {
+    left: 8%;
+    background: radial-gradient(circle at 35% 30%, #fff6dc 0%, #ffd27a 45%, #ff9d4d 78%, #f0793a 100%);
+    box-shadow:
+        0 0 26px 6px rgba(255, 179, 92, 0.45),
+        0 0 50px rgba(255, 157, 77, 0.25);
+    animation: kawaiiFloat 5.5s ease-in-out infinite, kawaiiWobble 9s ease-in-out infinite;
+}
+
+/* Rayos del sol: 8 bultos redondeados alrededor del cuerpo, dibujados con
+   box-shadow (círculos sólidos, sin blur) sobre un punto central invisible
+   — así se lee claramente como un sol y no como un blob cualquiera. Sin
+   filter:blur a propósito, para no sumar más superficie borrosa al canvas
+   (ver nota sobre artefactos de renderizado más abajo). */
+.loader-sun::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 2px;
+    z-index: -1;
+    border-radius: 50%;
+    background: #ffb35c;
+    box-shadow:
+        27px 0 0 10px #ffb35c,
+        19px 19px 0 10px #ffb35c,
+        0 27px 0 10px #ffb35c,
+        -19px 19px 0 10px #ffb35c,
+        -27px 0 0 10px #ffb35c,
+        -19px -19px 0 10px #ffb35c,
+        0 -27px 0 10px #ffb35c,
+        19px -19px 0 10px #ffb35c;
+}
+
+.loader-moon {
+    right: 8%;
+    background: radial-gradient(circle at 35% 30%, #f2f9ff 0%, #cfe6ff 45%, #93bdf2 78%, #5f86c9 100%);
+    box-shadow:
+        0 0 26px 6px rgba(140, 180, 255, 0.4),
+        0 0 50px rgba(111, 159, 219, 0.22);
+    animation: kawaiiFloat 6.5s ease-in-out infinite, kawaiiWobble 11s ease-in-out infinite reverse;
+    animation-delay: 0.6s, 0s;
+}
+
+/* Borde tipo "nube": menos bultos, más grandes y suaves que los rayos del
+   sol — la silueta esponjosa que distingue a la luna del sol de un vistazo */
+.loader-moon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 2px;
+    z-index: -1;
+    border-radius: 50%;
+    background: #cfe6ff;
+    box-shadow:
+        24px -10px 0 13px #cfe6ff,
+        22px 16px 0 13px #cfe6ff,
+        -6px 26px 0 13px #cfe6ff,
+        -26px 6px 0 13px #cfe6ff,
+        -14px -22px 0 13px #cfe6ff;
+}
+
+/* Cráteres — solo la luna. El detalle que la hace inconfundible como luna
+   y no como un simple círculo de color */
+.kawaii-crater {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(95, 134, 201, 0.4);
+    z-index: 1;
+}
+
+.kawaii-crater--1 { width: 11px; height: 11px; top: 20%; left: 24%; }
+.kawaii-crater--2 { width: 7px;  height: 7px;  top: 62%; left: 18%; }
+.kawaii-crater--3 { width: 8px;  height: 8px;  top: 24%; left: 68%; }
+
+.kawaii-face {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.kawaii-eye {
+    position: absolute;
+    top: 40%;
+    width: 6px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(60, 30, 10, 0.75);
+    animation: kawaiiBlink 4.5s ease-in-out infinite;
+}
+
+.loader-moon .kawaii-eye {
+    background: rgba(20, 30, 60, 0.7);
+}
+
+.kawaii-eye--left { left: 36%; }
+.kawaii-eye--right { left: 54%; }
+
+.kawaii-blush {
+    position: absolute;
+    top: 52%;
+    width: 9px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0.6;
+}
+
+.loader-sun .kawaii-blush { background: rgba(255, 140, 90, 0.55); }
+.loader-moon .kawaii-blush { background: rgba(150, 190, 255, 0.55); }
+
+.kawaii-blush--left { left: 22%; }
+.kawaii-blush--right { right: 22%; }
+
+.kawaii-mouth {
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    width: 12px;
+    height: 6px;
+    transform: translateX(-50%);
+    border-radius: 0 0 50% 50%;
+    border-bottom: 2px solid rgba(60, 30, 10, 0.6);
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+
+.loader-moon .kawaii-mouth {
+    border-bottom-color: rgba(20, 30, 60, 0.55);
+}
+
+/* ── Móvil pequeño: sol/luna más chicos y más pegados al borde,
+   para no invadir el bloque central de carga ── */
+@media (max-width: 480px) {
+    .loader-sun,
+    .loader-moon {
+        width: 46px;
+        height: 46px;
+        top: 9%;
+    }
+
+    .loader-sun { left: 5%; }
+    .loader-moon { right: 5%; }
+
+    /* Los rayos/nubes usan offsets en px fijos (box-shadow no acepta %),
+       así que se reescalan a mano para el cuerpo más chico */
+    .loader-sun::before,
+    .loader-moon::before {
+        transform: scale(0.72);
+    }
 }
 
 /* ── Escritorio / pantallas grandes ── */
@@ -75,5 +271,24 @@
 
     .loading-text {
         font-size: 1rem;
+    }
+
+    .loading-percent {
+        font-size: 0.9rem;
+    }
+
+    .loader-sun,
+    .loader-moon {
+        width: 84px;
+        height: 84px;
+        top: 16%;
+    }
+
+    .loader-sun { left: 12%; }
+    .loader-moon { right: 12%; }
+
+    .loader-sun::before,
+    .loader-moon::before {
+        transform: scale(1.3);
     }
 }

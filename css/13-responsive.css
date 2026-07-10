@@ -45,14 +45,21 @@
         bottom: 10%;
     }
 
-    .deco-planet-group .deco-planet--blue {
-        width: 50px;
-        height: 50px;
+    .deco-planet-group .deco-planet--hero {
+        width: 54px;
+        height: 54px;
     }
 
-    .screen.active::before {
-        width: 36px;
-        height: 36px;
+    .deco-radar-ring {
+        width: 92px;
+        height: 92px;
+        margin: -46px 0 0 -46px;
+    }
+
+    .anchor-planet-group {
+        --anchor-planet-size: 36px;
+        --anchor-ring-w: 66px;
+        --anchor-ring-h: 12px;
         top: 8%;
         left: 4%;
     }
@@ -125,9 +132,9 @@
         height: 118px;
     }
 
-    .deco-planet-group .deco-planet--blue {
-        width: 90px;
-        height: 90px;
+    .deco-planet-group .deco-planet--hero {
+        width: 96px;
+        height: 96px;
     }
 }
 
