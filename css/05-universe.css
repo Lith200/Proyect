@@ -50,7 +50,7 @@ html::before {
     animation: twinkle 6s ease-in-out infinite;
 }
 
-/* ── Capa de estrellas brillantes (2px) — parpadeo desfasado para que el cielo no titile en bloque ── */
+/* ── Capa de estrellas brillantes (2px) ── */
 html::after {
     content: '';
     position: fixed;
@@ -79,27 +79,13 @@ html::after {
     animation-delay: -1.5s;
 }
 
-/* ── Contenedor de decoración cósmica real (planetas fuera del flujo de pantallas) ── */
+/* ── Contenedor de decoración cósmica real ── */
 .cosmic-decor {
     position: relative;
     z-index: 0;
 }
 
-/* ── Cometas ──
-   El sistema de cometas ya no vive aquí en CSS: se movió por completo a
-   canvas (ver 14-comets.js), porque un cometa realista con polvo
-   disperso y desvaneciéndose es mucho más natural con partículas
-   individuales que con una forma CSS fija (por buena que fuera la cuña
-   anterior, seguía siendo una silueta rígida). El canvas dibuja el
-   núcleo/halo y las partículas de polvo directamente sobre
-   #universe-canvas, en la misma capa que estrellas y nebulosas. */
-
-/* ── Grano + brillo especular reutilizables ──
-   Se aplican como HIJOS reales (no pseudo-elementos) dentro de cualquier
-   esfera de planeta, para poder combinarse con un aro/aura que sí necesita
-   desbordarse del círculo (overflow:hidden en el padre lo recortaría).
-   El propio border-radius:50% en estos elementos ya los limita a la forma
-   circular, así que no hace falta tocar el overflow del contenedor. */
+/* ── Grano + brillo especular reutilizables ── */
 .planet-grain {
     position: absolute;
     inset: 0;
@@ -123,42 +109,38 @@ html::after {
     pointer-events: none;
 }
 
-/* ── Grupo planeta protagonista + anillo ──
-   Orden en el HTML: anillo (atrás) → planeta → anillo (adelante).
-   El planeta opaco tapa el tramo central del anillo trasero, y la copia
-   delantera se pinta encima del planeta — el anillo "atraviesa" la esfera
-   de verdad, por orden de pintado, sin clip-path ni trucos de recorte.
-
-   Nota técnica: el anillo y el planeta usan tamaños en PX explícitos (no %)
-   controlados por dos variables locales (--deco-hero-size / --deco-ring-w /
-   --deco-ring-h) definidas aquí y sobreescritas por breakpoint en
-   13-responsive.css — así cada tamaño es predecible y no depende de cálculos
-   porcentuales anidados que se desalinean entre pantallas. */
+/* ── Grupo planeta protagonista + anillo ── */
 .deco-planet-group {
     --deco-hero-size: 76px;
     --deco-ring-w: 260px;
-    --deco-ring-h: 34px;
+    --deco-ring-h: 60px; /* Incrementado para dar más apertura a la elipse */
 
     position: fixed;
-    width: 132px;
-    height: 92px;
+    width: var(--deco-ring-w);
+    height: var(--deco-ring-h);
     bottom: 12%;
     left: -20px;
     z-index: 0;
     pointer-events: none;
     opacity: 0.9;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transform-style: preserve-3d;
-    /* Deriva propia además del giro del planeta: el grupo entero flota y se
-       balancea suavemente (no solo la esfera gira sobre sí misma) — mucho
-       más vivo que quedarse fijo con solo un spin interno. El parallax
-       (04-universe.js) sigue viajando dentro de este mismo transform. */
     animation: planetGroupDrift 9s ease-in-out infinite;
 }
 
-/* Anillo radar HUD — marca el planeta protagonista como "objeto rastreado"
-   por la consola, girando despacio detrás de él. Deliberadamente discreto
-   (borde punteado fino, sin relleno) para no competir con el anillo real
-   del planeta, que es el elemento con más peso visual del grupo. */
+/* Forzamos a que compartan exactamente el mismo punto central */
+.deco-planet-group .deco-planet--hero,
+.deco-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: center center;
+}
+
+/* Anillo radar HUD */
 .deco-radar-ring {
     position: absolute;
     top: 50%;
@@ -173,95 +155,100 @@ html::after {
     animation: radarSpin 16s linear infinite;
 }
 
+/* Esfera del Planeta Principal */
 .deco-planet-group .deco-planet--hero {
-    position: absolute;
-    top: 50%;
-    left: 50%;
     width: var(--deco-hero-size);
     height: var(--deco-hero-size);
     border-radius: 50%;
     background: var(--planet-hero);
+    transform: translate(-50%, -50%); 
+    z-index: 2; /* El planeta va en medio del sándwich */
     box-shadow:
-        inset -14px -9px 22px rgba(40, 5, 35, 0.5),
-        inset 7px 7px 14px rgba(255, 210, 235, 0.2),
+        inset -14px -9px 22px rgba(50, 22, 6, 0.45),
+        inset 7px 7px 14px rgba(255, 245, 220, 0.22),
         var(--sphere-rim-light),
         var(--planet-outline-stroke),
-        /* Rim light saturado tipo anime — el borde "brilla" en rosa/magenta
-           vívido en vez de solo tener sombra oscura alrededor */
         0 0 20px 3px var(--rim-glow-hero),
-        0 0 40px rgba(200, 90, 210, 0.3);
-    /* Keyframe "Centered": conserva el translate(-50%,-50%) en cada fotograma
-       (ver nota en 12-animations.css) — el parallax del grupo ya viaja en el
-       padre, así que aquí no hace falta duplicarlo. */
+        0 0 40px rgba(210, 130, 50, 0.32);
     animation: planetSpin3dCentered 55s var(--ease-orbit) infinite reverse;
     will-change: transform;
 }
 
-/* Aura pulsante detrás del planeta — "respira" en intensidad, como el
-   halo mágico de un objeto celeste en escenas de anime. Al ser un círculo
-   perfecto y simétrico, girar junto con el planeta (comparten transform)
-   no genera ningún artefacto visual. */
+/* Gran Mancha Roja */
+.planet-great-spot {
+    position: absolute;
+    top: 56%;
+    left: 20%;
+    width: 28%;
+    height: 17%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 35% 35%, #e8763e 0%, #c9501f 42%, #8a3010 78%, transparent 100%);
+    opacity: 0.88;
+    filter: blur(0.4px);
+    pointer-events: none;
+}
+
+/* Aura pulsante del planeta */
 .deco-planet-group .deco-planet--hero::after {
     content: '';
     position: absolute;
     inset: -45%;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--rim-glow-hero) 0%, rgba(200, 90, 210, 0.12) 55%, transparent 75%);
+    background: radial-gradient(circle, var(--rim-glow-hero) 0%, rgba(210, 130, 50, 0.12) 55%, transparent 75%);
     animation: planetAuraPulse 4s ease-in-out infinite;
     pointer-events: none;
     z-index: -1;
 }
 
-/* Anillo grueso y brillante (referencia: tono cremoso/rosado, no un hilo fino) */
-.deco-ring {
+/* Resplandor/Glow del anillo */
+.deco-ring-glow {
     position: absolute;
     top: 50%;
     left: 50%;
     width: var(--deco-ring-w);
     height: var(--deco-ring-h);
     border-radius: 50%;
-    /* Antes era un tono rosado (a juego con el planeta); ahora plateado/
-       blanco frío, para que el anillo contraste con la esfera en vez de
-       fundirse con ella — como en la referencia. */
-    border: 9px solid rgba(226, 228, 240, 0.75);
+    transform: translate(-50%, -50%) rotate(-13deg);
     box-shadow:
-        0 0 16px rgba(210, 215, 235, 0.45),
-        0 0 32px rgba(180, 190, 220, 0.25);
-    transform: translate(-50%, -50%) rotate(-16deg);
+        0 0 16px rgba(220, 140, 60, 0.4),
+        0 0 32px rgba(190, 100, 40, 0.25);
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Antes .deco-ring--back/--front eran DOS COPIAS COMPLETAS de la misma
-   elipse (una detrás del planeta, otra encima) — la copia "delantera" al
-   ser una elipse entera, en realidad tapaba el planeta por completo, no
-   solo la mitad que debía pasar por delante. El recorte real pasaba
-   desapercibido nada más porque el planeta ya ocultaba el tramo central
-   de la copia trasera; la delantera nunca se "escondía" de verdad detrás
-   de la esfera en el lado opuesto.
+/* Anillo de asteroides base */
+.deco-ring {
+    width: var(--deco-ring-w);
+    height: var(--deco-ring-h);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+        transparent 0%, transparent 46%,
+        rgba(70, 35, 12, 0.5) 47%, rgba(70, 35, 12, 0.5) 50%,
+        rgba(230, 160, 90, 0.9) 52%, rgba(255, 210, 145, 0.95) 57%, rgba(230, 160, 90, 0.9) 61%,
+        rgba(70, 35, 12, 0.45) 63%, rgba(70, 35, 12, 0.45) 66%,
+        rgba(210, 130, 60, 0.75) 69%, rgba(240, 180, 110, 0.85) 74%, rgba(210, 130, 60, 0.75) 78%,
+        rgba(70, 35, 12, 0.35) 80%, rgba(70, 35, 12, 0.35) 82%,
+        rgba(200, 120, 55, 0.5) 86%,
+        transparent 93%, transparent 100%);
+}
 
-   Ahora cada copia se recorta a SU mitad real con clip-path (en el
-   espacio local de la elipse, antes de aplicar el rotate — así el corte
-   queda alineado con el eje mayor de la elipse ya inclinada, igual que el
-   split por ángulo que usa el agujero negro en canvas). El punto de
-   encuentro de ambas mitades cae justo en los extremos izquierdo y
-   derecho de la elipse, que es donde el anillo "entra" y "sale" del
-   contorno del planeta — el mismo principio, solo que aquí en CSS puro
-   en vez de un arco de canvas. */
+/* Mitad Trasera del Anillo: Pasa por detrás */
 .deco-ring--back {
-    opacity: 0.55;
-    clip-path: inset(0 0 50% 0); /* mitad lejana: pasa detrás del planeta */
+    z-index: 1;
+    transform: translate(-50%, -50%) rotate(-13deg);
+    clip-path: inset(0 0 50% 0); /* Mitad lejana superior */
+    opacity: 0.6;
 }
 
+/* Mitad Delantera del Anillo: Pasa por delante */
 .deco-ring--front {
-    opacity: 0.95;
-    border-color: rgba(240, 242, 250, 0.92);
-    clip-path: inset(50% 0 0 0); /* mitad cercana: pasa por delante */
+    z-index: 3;
+    transform: translate(-50%, -50%) rotate(-13deg);
+    clip-path: inset(50% 0 0 0); /* Mitad cercana inferior */
+    opacity: 1;
 }
 
-/* Un par de destellos puntuales sobre el anillo delantero — el típico
-   "brillito" mágico anime, no busca ser matemáticamente exacto sobre la
-   elipse, solo dar vida al anillo con un par de chispas que titilan.
-   Reubicados dentro del 50%–100% (la mitad inferior, que es la única
-   visible ahora que el anillo delantero está recortado con clip-path). */
+/* Destellos sobre el anillo delantero */
 .deco-ring--front::before,
 .deco-ring--front::after {
     content: '';
@@ -286,14 +273,11 @@ html::after {
     animation-delay: 1.3s;
 }
 
-/* Lunita compañera flotando cerca del planeta protagonista — el detalle
-   de "no está solo en el encuadre" que se ve en la referencia (un cuerpo
-   pequeño adicional, no solo el planeta con su anillo). Flota con su
-   propio vaivén, independiente del grupo. */
+/* Lunita compañera */
 .deco-companion-moon {
     position: absolute;
-    top: 6%;
-    right: 4%;
+    top: 20%;
+    right: 20%;
     width: 15px;
     height: 15px;
     border-radius: 50%;
@@ -307,116 +291,159 @@ html::after {
     will-change: transform;
 }
 
-/* ── Sistema planetario "ancla" (Intro / Propuesta) ──
-   Antes eran ::before (planeta) / ::after (luna) sobre el propio .screen —
-   solo 2 pseudo-elementos, sin espacio para sumar grano, brillo o un
-   anillo propio. Ahora es un grupo real (mismo patrón que
-   .deco-planet-group), lo que permite darle el mismo nivel de detalle que
-   el planeta protagonista: anillo propio con luna que viaja sobre su
-   elipse real (no una órbita circular genérica), grano y brillo especular.
-
-   Visibilidad por pantalla: en vez de depender de JS, se usa :has() para
-   mostrar el grupo solo cuando Intro o Propuesta están activas — la misma
-   idea que antes lograban los pseudo-elementos, pero con markup real. */
-.anchor-planet-group {
-    --anchor-planet-size: 44px;
-    --anchor-ring-w: 82px;
-    --anchor-ring-h: 15px;
-
+/* ── Mini-slime cósmico ── */
+.slime-group {
     display: none;
     position: fixed;
     top: 10%;
     left: 6%;
     width: 90px;
-    height: 60px;
+    height: 90px;
     z-index: 3;
     pointer-events: none;
-    transform-style: preserve-3d;
     animation: planetGroupDrift 9s ease-in-out infinite;
 }
 
-body:has(#screen-intro.active) .anchor-planet-group,
-body:has(#screen-proposal.active) .anchor-planet-group {
+body:has(#screen-intro.active) .slime-group,
+body:has(#screen-proposal.active) .slime-group {
     display: block;
 }
 
-.anchor-planet {
+/* Aura del Slime */
+.slime-aura {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: var(--anchor-planet-size);
-    height: var(--anchor-planet-size);
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    clip-path: polygon(
+        50% 0%, 60% 15%, 75% 8%, 78% 25%, 92% 20%, 88% 38%, 100% 45%,
+        85% 55%, 92% 68%, 75% 65%, 70% 82%, 55% 75%, 50% 95%, 40% 78%,
+        25% 88%, 28% 68%, 10% 72%, 18% 55%, 2% 48%, 15% 38%, 8% 22%,
+        25% 28%, 30% 10%, 42% 18%
+    );
+    z-index: -1;
+    pointer-events: none;
+}
+
+.slime-aura--outer {
+    background: linear-gradient(200deg, #dff05a 0%, #5be0c0 55%, #ec5aa8 100%);
+    opacity: 0.55;
+    filter: blur(0.5px);
+    animation: slimeAuraPulse 3.4s ease-in-out infinite;
+}
+
+.slime-aura--mid {
+    width: 70px;
+    height: 70px;
+    margin: -35px 0 0 -35px;
+    background: linear-gradient(200deg, #eaf27a 0%, #6be8cf 55%, #f27ab8 100%);
+    opacity: 0.65;
+    animation: slimeAuraPulse 3.4s ease-in-out infinite reverse;
+    animation-delay: -1.5s;
+}
+
+.slime-aura--inner {
+    width: 58px;
+    height: 58px;
+    margin: -29px 0 0 -29px;
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.5) 0%, rgba(120, 230, 210, 0.4) 45%, rgba(240, 130, 190, 0.3) 100%);
+    opacity: 0.8;
+    animation: slimeAuraPulse 2.8s ease-in-out infinite;
+    animation-delay: 0.15s;
+}
+
+/* Cuerpo del slime */
+.slime-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
     border-radius: 50%;
-    /* Antes usaba --planet-hero (mismo rosa/magenta que el protagonista) —
-       ahora tiene su propio tono púrpura, para que los dos planetas que
-       más se ven en pantalla no sean del mismo color */
-    background: var(--planet-purple);
+    background:
+        radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.22) 0%, transparent 8%),
+        radial-gradient(circle at 62% 70%, rgba(120, 90, 200, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 34% 60%, #171226 0%, #0a0714 55%, #030208 100%);
     box-shadow:
-        inset -8px -5px 14px rgba(20, 6, 40, 0.5),
-        inset 4px 4px 8px rgba(220, 190, 255, 0.18),
-        var(--sphere-rim-light),
-        var(--planet-outline-stroke),
-        0 0 16px 1px var(--rim-glow-purple),
-        0 0 28px rgba(150, 90, 220, 0.28);
-    animation:
-        planetSpin3dCentered 22s var(--ease-orbit) infinite,
-        planetGlowBreathe 4.5s ease-in-out infinite;
-    will-change: transform;
-    /* z-index explícito: necesario para que la luna (abajo) pueda
-       compararse contra él y pasar genuinamente por detrás/delante,
-       en vez de flotar siempre "auto" al mismo nivel que todo lo demás. */
-    z-index: 1;
+        inset -6px -4px 10px rgba(0, 0, 0, 0.6),
+        inset 4px 4px 8px rgba(180, 150, 255, 0.12),
+        0 0 14px rgba(150, 220, 200, 0.35),
+        0 0 26px rgba(240, 130, 190, 0.22);
+    overflow: hidden;
+    animation: planetSpin3dCentered 40s var(--ease-orbit) infinite;
 }
 
-.anchor-ring {
+.slime-star {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: var(--anchor-ring-w);
-    height: var(--anchor-ring-h);
     border-radius: 50%;
-    border: 2px solid rgba(226, 228, 240, 0.65);
-    box-shadow: 0 0 8px rgba(200, 208, 230, 0.4);
-    transform: translate(-50%, -50%) rotate(-16deg);
+    background: #fff;
+    box-shadow: 0 0 3px #fff;
 }
 
-.anchor-ring--back {
-    opacity: 0.5;
-    clip-path: inset(0 0 50% 0); /* mitad lejana: pasa detrás del planeta */
-}
+.slime-star--1 { top: 20%; left: 68%; width: 2px; height: 2px; }
+.slime-star--2 { top: 62%; left: 74%; width: 1.5px; height: 1.5px; }
+.slime-star--3 { top: 32%; left: 40%; width: 1.5px; height: 1.5px; }
 
-.anchor-ring--front {
+/* Remolino facial */
+.slime-swirl {
+    position: absolute;
+    top: 18%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2040%2040'%3E%3Cpath%20d%3D'M21.50%2C20.00%20L21.73%2C20.62%20L21.68%2C21.39%20L21.28%2C22.16%20L20.53%2C22.80%20L19.50%2C23.15%20L18.30%2C23.09%20L17.10%2C22.55%20L16.09%2C21.55%20L15.46%2C20.14%20L15.36%2C18.49%20L15.88%2C16.81%20L17.03%2C15.31%20L18.72%2C14.25%20L20.78%2C13.82%20L22.98%2C14.15%20L25.03%2C15.28%20L26.64%2C17.13%20L27.56%2C19.52%20L27.60%2C22.21%20L26.67%2C24.85%20L24.83%2C27.10%20L22.22%2C28.64%20L19.13%2C29.22%20L15.91%2C28.69%20L12.97%2C27.03%20L10.70%2C24.37%20L9.43%2C21.00%20L9.39%2C17.28%20L10.66%2C13.66%20L13.17%2C10.60%20L16.66%2C8.51%20L20.77%2C7.72%20L25.02%2C8.40%20L28.88%2C10.54%20L31.86%2C13.96%20L33.54%2C18.29%20L33.65%2C23.05%20L32.09%2C27.68%20L28.99%2C31.59%20L24.64%2C34.27'%20stroke%3D'white'%20stroke-width%3D'2.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
     opacity: 0.9;
-    border-color: rgba(240, 242, 250, 0.88);
-    clip-path: inset(50% 0 0 0); /* mitad cercana: pasa por delante */
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));
+    animation: slimeSwirlSpin 12s linear infinite;
 }
 
-/* Luna que viaja sobre la elipse real del anillo (no una órbita circular
-   genérica) — los offsets vienen de resolver la ecuación de la elipse
-   (rx≈36, ry≈7) rotada -16° en varios pasos, para que calce visualmente
-   con el anillo dibujado arriba. El z-index se anima junto con la
-   posición (ver keyframe): cuando la luna está en la mitad lejana pasa
-   detrás del planeta (z-index bajo), y en la mitad cercana pasa por
-   delante (z-index alto) — la misma idea que el anillo, pero aplicada
-   a un cuerpo que se mueve en vez de una forma estática. */
-.anchor-moon {
+/* Ojos */
+.slime-eye {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 9px;
-    height: 9px;
-    margin: -4.5px 0 0 -4.5px;
-    border-radius: 50%;
-    background: var(--moon-surface);
-    box-shadow:
-        inset -2px -1px 4px rgba(0, 0, 0, 0.3),
-        inset 1px 1px 3px rgba(255, 255, 255, 0.35),
-        var(--sphere-rim-light),
-        0 0 6px rgba(255, 255, 255, 0.35);
-    animation: anchorMoonOrbitRing 10s linear infinite;
+    top: 56%;
+    width: 20%;
+    height: 26%;
+    background: linear-gradient(160deg, #ffffff 0%, #dfe6f5 70%, #b9c3e0 100%);
+    border-radius: 55% 55% 55% 5%;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+    animation: slimeBlink 5s ease-in-out infinite;
 }
 
-/* ── Canvas del universo interactivo (estrellas + partículas dibujadas en JS) ── */
+.slime-eye--left {
+    left: 24%;
+    transform: rotate(-25deg);
+    transform-origin: bottom center;
+}
+
+.slime-eye--right {
+    left: 54%;
+    transform: rotate(25deg) scaleX(-1);
+    transform-origin: bottom center;
+}
+
+/* Boca */
+.slime-mouth {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-mono);
+    animation: slimeMouthTalk 3.6s ease-in-out infinite;
+}
+
+.slime-mouth::after {
+    content: 'w';
+}
+
+/* ── Canvas del universo interactivo ── */
 #universe-canvas {
     position: fixed;
     top: 0;
@@ -427,22 +454,3 @@ body:has(#screen-proposal.active) .anchor-planet-group {
     pointer-events: none;
     opacity: 0.7;
 }
-
-/* ==========================================================
-   NOTA: se removieron por completo ".deco-planet--pink" y las nebulosas
-   CSS (".cosmic-nebula", ".nebula-purple", ".nebula-blue"), junto con la
-   regla inválida "body::marker" (::marker no aplica a <body>, era código
-   muerto).
-
-   Motivo: ".nebula-purple"/".nebula-blue" aplicaban filter: blur(90px)
-   sobre círculos de 650px/550px. Ese nivel de blur es muy costoso, y en
-   motores de renderizado con soporte limitado de "filter" (wallpaper
-   engines, GPUs de gama baja, vistas en segundo plano) el navegador no
-   logra suavizar el degradado y lo pinta como bloques/manchas — el
-   patrón de "blobs" que se veía en pantalla. El planeta rosa se quitó
-   junto con ellas por la misma petición de limpieza visual.
-
-   El equivalente ambiental (nebulosas de fondo, tono púrpura/azul) sigue
-   presente de forma más barata vía "--cosmic-bg" en 02-variables.css y
-   los gradientes de 03-global.css / body, sin necesitar filter:blur.
-========================================================== */

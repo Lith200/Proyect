@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Alguien Completamente Especial 🌸✨</title>
+    <title>Solo para Seños 🌸✨</title>
     <!-- CSS Layers -->
     <link rel="stylesheet" href="css/01-reset.css">
     <link rel="stylesheet" href="css/02-variables.css">
@@ -38,9 +38,11 @@
             <!-- Anillo radar HUD: marca el planeta como "objeto rastreado" -->
             <span class="deco-radar-ring"></span>
 
+            <span class="deco-ring-glow"></span>
             <span class="deco-ring deco-ring--back"></span>
 
             <div class="deco-planet deco-planet--hero">
+                <span class="planet-great-spot"></span>
                 <span class="planet-grain"></span>
                 <span class="planet-highlight"></span>
             </div>
@@ -52,17 +54,22 @@
 
         </div>
 
-        <!-- Planeta ancla (solo visible en Intro/Propuesta vía :has() en CSS):
-             mismo nivel de detalle que el protagonista — anillo propio, grano,
-             brillo especular y una luna que viaja sobre la elipse real del anillo. -->
-        <div class="anchor-planet-group" aria-hidden="true">
-            <span class="anchor-ring anchor-ring--back"></span>
-            <div class="anchor-planet">
-                <span class="planet-grain"></span>
-                <span class="planet-highlight"></span>
+        <!-- Mini-slime cósmico (solo visible en Intro/Propuesta vía :has() en CSS):
+             reemplaza al planeta ancla anterior — esfera con carita, remolino
+             y aura multicolor tipo llama, con movimiento y micro-expresiones. -->
+        <div class="slime-group" aria-hidden="true">
+            <span class="slime-aura slime-aura--outer"></span>
+            <span class="slime-aura slime-aura--mid"></span>
+            <span class="slime-aura slime-aura--inner"></span>
+            <div class="slime-body">
+                <span class="slime-star slime-star--1"></span>
+                <span class="slime-star slime-star--2"></span>
+                <span class="slime-star slime-star--3"></span>
+                <span class="slime-swirl"></span>
+                <span class="slime-eye slime-eye--left"></span>
+                <span class="slime-eye slime-eye--right"></span>
+                <span class="slime-mouth"></span>
             </div>
-            <span class="anchor-ring anchor-ring--front"></span>
-            <span class="anchor-moon"></span>
         </div>
 
     </div>
@@ -110,7 +117,7 @@
                 <div class="loading-bar" id="initial-load-bar"></div>
             </div>
             <div class="loading-meta">
-                <p class="loading-text" id="loading-text-hint">Cargando un pedacito de mi corazón...</p>
+                <p class="loading-text" id="loading-text-hint">Cargando una pieza de mi corazon...</p>
                 <span class="loading-percent" id="loading-percent">0%</span>
             </div>
         </div>
@@ -120,10 +127,9 @@
     <div class="screen" id="screen-intro">
         <div class="card glass-card fade-in">
             <div class="avatar-container">✨🌸✨</div>
-            <h1 class="title">Hola, persona favorita...</h1>
-            <p class="subtitle">He construido este rincón digital interactivo especialmente para ti. Dale al botón de
-                abajo para encender la música y empezar a descubrirlo.</p>
-            <button class="btn pulse-btn" id="btn-start-journey">Comenzar el viaje ✨</button>
+            <h1 class="title">Hola, Seños...</h1>
+            <p class="subtitle">He construido un pequeño regalo digital especialmente solo para ti. Dale al botón y descubrelo.</p>
+            <button class="btn pulse-btn" id="btn-start-journey">Comienza el viaje ✨</button>
         </div>
     </div>
 
@@ -131,7 +137,7 @@
     <div class="screen" id="screen-story">
         <div class="card long-card">
             <div class="card-icon">✉️</div>
-            <h2 class="section-title">Lo que siempre quise decirte...</h2>
+            <h2 class="section-title">una parte de mi corazon...</h2>
 
             <div class="letter-box">
                 <div class="typewriter-container" id="typewriter-text"></div>
@@ -144,28 +150,28 @@
     <!-- Pantalla 4: Nuestra Línea de Tiempo / Momentos Mágicos -->
     <div class="screen" id="screen-timeline">
         <div class="card timeline-card">
-            <h2 class="section-title">Nuestra Pequeña Gran Historia ✨</h2>
-            <p class="section-desc">Cada momento a tu lado ha dejado una huella imborrable...</p>
+            <h2 class="section-title">Una Pequeña Gran Historia ✨</h2>
+            <p class="section-desc">jjjjjjj...</p>
 
             <div class="timeline-container">
                 <div class="timeline-item left">
                     <div class="timeline-content">
-                        <span class="timeline-date">El Inicio 🌸</span>
-                        <p>Cuando empezamos a hablar por primera vez y tu sola presencia cambió por completo la
-                            dirección de mis días ordinarios.</p>
+                        <span class="timeline-date">Comienzo🌸</span>
+                        <p>Tal vez fue desde antes pero empeze a sentir distinto durante los momentos de nuestras partidas,
+                        un cambio para mi con una rutina ordinaria.</p>
                     </div>
                 </div>
                 <div class="timeline-item right">
                     <div class="timeline-content">
-                        <span class="timeline-date">Las Risas 💕</span>
-                        <p>Tus ocurrencias, tus audios, tus mensajes inesperados... cada detalle tuyo se convirtió
+                        <span class="timeline-date">Las horas 💕</span>
+                        <p>Tus ocurrencias, tus gritos, tus mensajes inesperados... cada detalle tuyo se convirtió
                             velozmente en mi parte favorita del día.</p>
                     </div>
                 </div>
                 <div class="timeline-item left">
                     <div class="timeline-content">
                         <span class="timeline-date">El Sentimiento 💞</span>
-                        <p>El instante exacto en que me di cuenta de que te habías vuelto alguien irremplazable, único y
+                        <p>Y ese fue el momento exacto en que me di cuenta de que te habías vuelto alguien irremplazable, único y
                             sumamente especial en mi vida.</p>
                     </div>
                 </div>
@@ -197,9 +203,9 @@
     <div class="screen" id="screen-proposal">
         <div class="card final-card scale-up">
             <div class="heart-crown">💖🌟💖</div>
-            <h2 class="final-title">¡Lo lograste a la perfección! 🥰</h2>
+            <h2 class="final-title">¡Mini juego completado!</h2>
             <p class="final-paragraph">Gracias por regalarme estos minutos de tu tiempo para recorrer este pequeño
-                universo. Sabes perfectamente lo muchísimo que me encantas y la falta infinita que me haces a diario...
+                universo. Sabes desde hoy perfectamente lo mucho que significas para mi
             </p>
 
             <!-- Gatito Cute Animado Puro CSS/Emoji -->

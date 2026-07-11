@@ -21,6 +21,13 @@
     .pulsing-heart {
         font-size: 3.5rem;
     }
+
+    /* Reducción proporcional extrema para el planeta y su anillo */
+    .deco-planet-group {
+        --deco-hero-size: 46px;
+        --deco-ring-w: 150px;
+        --deco-ring-h: 36px;
+    }
 }
 
 /* ══════════════════════════════════════
@@ -36,105 +43,53 @@
 
     .card {
         padding: 24px 18px;
-        margin: auto 0;
+        border-radius: 20px;
     }
 
+    /* Escalado exacto para teléfonos estándar: el anillo mantiene la apertura 3D */
     .deco-planet-group {
-        width: 96px;
-        height: 66px;
-        bottom: 10%;
-    }
-
-    .deco-planet-group .deco-planet--hero {
-        width: 54px;
-        height: 54px;
-    }
-
-    .deco-radar-ring {
-        width: 92px;
-        height: 92px;
-        margin: -46px 0 0 -46px;
-    }
-
-    .anchor-planet-group {
-        --anchor-planet-size: 36px;
-        --anchor-ring-w: 66px;
-        --anchor-ring-h: 12px;
-        top: 8%;
-        left: 4%;
-    }
-
-    .timeline-container::after {
-        left: 12px;
-    }
-
-    .timeline-item {
-        padding-left: 40px;
-    }
-
-    .timeline-item::after {
-        left: 3px;
-        width: 16px;
-        height: 16px;
-    }
-
-    .letter-box {
-        max-height: 240px;
+        --deco-hero-size: 54px;
+        --deco-ring-w: 185px;
+        --deco-ring-h: 42px;
     }
 }
 
 /* ══════════════════════════════════════
-   TABLET (≥ 481px): más aire, botones en fila
+   TABLETS Y PANTALLAS MEDIANAS (≥ 481px)
    ══════════════════════════════════════ */
 @media (min-width: 481px) {
-    :root {
-        --card-max-width: 420px;
-        --card-padding: 32px 28px;
+    .card {
+        padding: 40px;
+        max-width: 440px;
     }
 
-    .screen {
-        align-items: center;
-    }
-
-    .proposal-buttons {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 16px;
-    }
-
-    .btn-choice {
-        flex: 0 1 auto;
+    .btn:hover,
+    .btn-choice:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 8px 20px rgba(236, 90, 168, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 }
 
 /* ══════════════════════════════════════
-   ESCRITORIO (≥ 768px): mismo umbral que usan
-   05-stars.js / 06-particles.js para "isMobile".
-   La tarjeta crece para aprovechar el espacio horizontal
-   (necesario para la timeline alternada de 08-timeline.css).
+   ESCRITORIO (≥ 768px)
    ══════════════════════════════════════ */
 @media (min-width: 768px) {
-    :root {
-        --card-max-width: 640px;
-        --card-padding: 40px 44px;
+    .card {
+        max-width: 480px;
+        padding: 48px;
     }
 
-    /* La carta y el timeline se benefician de un poco más de aire lateral */
-    .long-card,
-    .timeline-card {
-        max-width: 640px;
+    .title {
+        font-size: 2.2rem;
     }
 
-    /* El planeta decorativo de fondo puede ser un poco más grande sin invadir contenido */
+    /* Ajuste para pantallas grandes: el planeta crece y el anillo se expande proporcionalmente */
     .deco-planet-group {
-        width: 168px;
-        height: 118px;
-    }
-
-    .deco-planet-group .deco-planet--hero {
-        width: 96px;
-        height: 96px;
+        --deco-hero-size: 96px;
+        --deco-ring-w: 328px;
+        --deco-ring-h: 75px;
     }
 }
 
@@ -165,29 +120,36 @@
         min-height: 120px;
         max-height: 160px;
     }
+
+    /* Achicamos el grupo decorativo en pantallas muy bajas para que no estorbe el flujo */
+    .deco-planet-group {
+        --deco-hero-size: 42px;
+        --deco-ring-w: 140px;
+        --deco-ring-h: 32px;
+        bottom: 4%;
+    }
 }
 
 /* ══════════════════════════════════════
    ACCESIBILIDAD Y DISPOSITIVO
    ══════════════════════════════════════ */
 
-/* Preferencia de movimiento reducido */
+/* Preferencia de movimiento reducido: apaga animaciones costosas si el usuario lo pide */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
+    * {
+        animation-delay: 0s !important;
+        animation-duration: 0s !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        transition-duration: 0s !important;
+        scroll-behavior: auto !important;
     }
-
-    .card {
-        animation: none;
-    }
-}
-
-/* Safe areas para notch / barra de gestos */
-@supports (padding: env(safe-area-inset-top)) {
-    .screen {
-        padding-left: max(12px, env(safe-area-inset-left));
-        padding-right: max(12px, env(safe-area-inset-right));
+    
+    html::before,
+    html::after,
+    .deco-planet-group,
+    .deco-planet-group .deco-planet--hero,
+    .deco-ring--front::before,
+    .deco-ring--front::after {
+        animation: none !important;
     }
 }

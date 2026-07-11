@@ -113,24 +113,36 @@
         radial-gradient(circle at 40% 76%, rgba(70, 58, 92, 0.2) 0%, transparent 8%),
         radial-gradient(circle at 34% 30%, #ffffff 0%, #f1ecfb 30%, #cdbfe6 58%, #8b7aa8 100%);
 
-    /* Planeta "protagonista" (deco-planet--hero) — el de la referencia con
-       anillo grueso y brillante: bandas horizontales sutiles tipo Saturno
-       (repeating-linear-gradient) superpuestas al degradado esférico base,
-       en tonos rosa → magenta → púrpura, coherentes con la paleta romántica
-       del sitio (--accent-rose / --primary-love). Se le suman manchas
-       pintadas (mismo recurso que los otros planetas) para el look más
-       "acuarela/Ghibli" y menos degradado plano de la referencia. */
+    /* Planeta "protagonista" (deco-planet--hero) — ahora con la paleta y
+       bandas de Júpiter: crema/tostado/naranja, con anchos de banda
+       IRREGULARES (a propósito, no un repeating-linear-gradient uniforme)
+       para que se lea como bandas de tormenta reales y no como rayas de
+       sombrilla. La Gran Mancha Roja se agrega aparte como elemento hijo
+       (ver .planet-great-spot en 05-universe.css). Se le suman manchas
+       pintadas (mismo recurso que los otros planetas) para el look
+       "acuarela/Ghibli" en vez de degradado plano. */
     --planet-hero:
-        radial-gradient(circle at 30% 22%, #ffffff 0%, #ffffff 3%, transparent 7%),
-        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.5) 0%, transparent 16%),
-        radial-gradient(circle at 64% 20%, rgba(255, 255, 255, 0.16) 0%, transparent 22%),
+        radial-gradient(circle at 30% 22%, #fffdf2 0%, #fffdf2 3%, transparent 7%),
+        radial-gradient(circle at 34% 28%, rgba(255, 253, 242, 0.55) 0%, transparent 16%),
+        radial-gradient(circle at 64% 20%, rgba(255, 250, 230, 0.18) 0%, transparent 22%),
         radial-gradient(circle at 20% 54%, rgba(255, 255, 255, 0.1) 0%, transparent 18%),
-        radial-gradient(circle at 55% 60%, rgba(120, 20, 110, 0.2) 0%, transparent 24%),
-        radial-gradient(circle at 68% 74%, rgba(60, 10, 55, 0.42) 0%, transparent 46%),
-        repeating-linear-gradient(102deg,
-            rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 3px,
-            transparent 3px, transparent 13px),
-        radial-gradient(circle at 34% 30%, #ffeaf6 0%, #ffb3e0 18%, #ff74c4 36%, #d84fd6 54%, #9a45d6 72%, #4c1f8f 100%);
+        radial-gradient(circle at 55% 60%, rgba(150, 70, 20, 0.16) 0%, transparent 24%),
+        radial-gradient(circle at 68% 78%, rgba(80, 35, 10, 0.4) 0%, transparent 46%),
+        /* Bandas de tormenta: anchos y tonos irregulares, ligeramente
+           inclinadas, como las franjas reales de Júpiter */
+        linear-gradient(100deg,
+            transparent 0%, transparent 6%,
+            rgba(150, 80, 30, 0.35) 6%, rgba(150, 80, 30, 0.35) 11%,
+            transparent 11%, transparent 22%,
+            rgba(190, 110, 50, 0.3) 22%, rgba(190, 110, 50, 0.3) 30%,
+            transparent 30%, transparent 40%,
+            rgba(120, 55, 20, 0.4) 40%, rgba(120, 55, 20, 0.4) 45%,
+            transparent 45%, transparent 58%,
+            rgba(210, 140, 80, 0.28) 58%, rgba(210, 140, 80, 0.28) 68%,
+            transparent 68%, transparent 78%,
+            rgba(100, 45, 15, 0.35) 78%, rgba(100, 45, 15, 0.35) 84%,
+            transparent 84%, transparent 100%),
+        radial-gradient(circle at 34% 30%, #fdf6e3 0%, #f3dcae 20%, #e0a868 40%, #c97b45 60%, #9a5230 80%, #5c2f18 100%);
 
 
     /* Glow de borde por color — el "rim light" saturado tipo anime,
@@ -138,7 +150,7 @@
     --rim-glow-purple: rgba(224, 150, 255, 0.55);
     --rim-glow-pink: rgba(255, 150, 205, 0.55);
     --rim-glow-blue: rgba(140, 200, 255, 0.55);
-    --rim-glow-hero: rgba(255, 140, 210, 0.6);
+    --rim-glow-hero: rgba(255, 175, 90, 0.6);
 
     /* Textura granulada (referencia: ilustraciones vectoriales tipo Dribbble
        con grano fino sobre las esferas). Es ruido puro (feTurbulence),

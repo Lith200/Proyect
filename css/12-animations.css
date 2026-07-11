@@ -1,364 +1,551 @@
-/* 12-animations.css — Keyframes del cosmos */
+/* 05-universe.css — Cielo estrellado, planetas y lunas del cosmos */
 
-/* ══════════════════════════════════════
-   HUD — CONSOLA DE NAVE
-   ══════════════════════════════════════ */
-
-/* Giro lento del anillo radar alrededor del planeta protagonista */
-@keyframes radarSpin {
-    0%   { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* ── Capa de estrellas finas (1px) ── */
+html::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+        8vw 12vh 0 0 rgba(255, 255, 255, 0.35),
+        18vw 6vh 0 0 rgba(255, 255, 255, 0.55),
+        28vw 22vh 0 0 rgba(255, 255, 255, 0.25),
+        38vw 14vh 0 0 rgba(255, 255, 255, 0.45),
+        48vw 8vh 0 0 rgba(255, 255, 255, 0.3),
+        58vw 18vh 0 0 rgba(255, 255, 255, 0.5),
+        68vw 10vh 0 0 rgba(255, 255, 255, 0.4),
+        78vw 24vh 0 0 rgba(255, 255, 255, 0.28),
+        88vw 16vh 0 0 rgba(255, 255, 255, 0.42),
+        12vw 32vh 0 0 rgba(255, 255, 255, 0.38),
+        22vw 38vh 0 0 rgba(255, 255, 255, 0.22),
+        32vw 44vh 0 0 rgba(255, 255, 255, 0.48),
+        42vw 36vh 0 0 rgba(255, 255, 255, 0.32),
+        52vw 42vh 0 0 rgba(255, 255, 255, 0.55),
+        62vw 34vh 0 0 rgba(255, 255, 255, 0.26),
+        72vw 48vh 0 0 rgba(255, 255, 255, 0.44),
+        82vw 40vh 0 0 rgba(255, 255, 255, 0.36),
+        92vw 52vh 0 0 rgba(255, 255, 255, 0.3),
+        6vw 58vh 0 0 rgba(255, 255, 255, 0.42),
+        16vw 64vh 0 0 rgba(255, 255, 255, 0.28),
+        26vw 56vh 0 0 rgba(255, 255, 255, 0.5),
+        36vw 68vh 0 0 rgba(255, 255, 255, 0.34),
+        46vw 62vh 0 0 rgba(255, 255, 255, 0.24),
+        56vw 72vh 0 0 rgba(255, 255, 255, 0.46),
+        66vw 58vh 0 0 rgba(255, 255, 255, 0.38),
+        76vw 66vh 0 0 rgba(255, 255, 255, 0.3),
+        86vw 74vh 0 0 rgba(255, 255, 255, 0.52),
+        10vw 82vh 0 0 rgba(255, 255, 255, 0.32),
+        20vw 78vh 0 0 rgba(255, 255, 255, 0.44),
+        30vw 88vh 0 0 rgba(255, 255, 255, 0.26),
+        40vw 84vh 0 0 rgba(255, 255, 255, 0.48),
+        50vw 92vh 0 0 rgba(255, 255, 255, 0.36),
+        60vw 86vh 0 0 rgba(255, 255, 255, 0.28),
+        70vw 94vh 0 0 rgba(255, 255, 255, 0.42),
+        80vw 80vh 0 0 rgba(255, 255, 255, 0.34),
+        90vw 90vh 0 0 rgba(255, 255, 255, 0.5);
+    animation: twinkle 6s ease-in-out infinite;
 }
 
-/* Ping expansivo tipo "señal prioritaria" — usado en el botón de propuesta */
-@keyframes radarPing {
-    0%   { transform: scale(1);    opacity: 0.75; }
-    100% { transform: scale(1.18); opacity: 0; }
+/* ── Capa de estrellas brillantes (2px) — parpadeo desfasado para que el cielo no titile en bloque ── */
+html::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+        14vw 18vh 0 0 rgba(255, 255, 255, 0.6),
+        34vw 28vh 0 0 rgba(255, 255, 255, 0.45),
+        54vw 12vh 0 0 rgba(255, 255, 255, 0.7),
+        74vw 32vh 0 0 rgba(255, 255, 255, 0.5),
+        24vw 52vh 0 0 rgba(255, 255, 255, 0.55),
+        44vw 72vh 0 0 rgba(255, 255, 255, 0.65),
+        64vw 48vh 0 0 rgba(255, 255, 255, 0.4),
+        84vw 68vh 0 0 rgba(255, 255, 255, 0.58),
+        4vw 42vh 0 0 rgba(255, 255, 255, 0.48),
+        94vw 22vh 0 0 rgba(255, 255, 255, 0.62),
+        18vw 76vh 0 0 rgba(255, 255, 255, 0.52),
+        58vw 82vh 0 0 rgba(255, 255, 255, 0.44),
+        78vw 8vh 0 0 rgba(255, 255, 255, 0.68),
+        38vw 92vh 0 0 rgba(255, 255, 255, 0.38);
+    animation: twinkle 4s ease-in-out infinite reverse;
+    animation-delay: -1.5s;
 }
 
-/* ══════════════════════════════════════
-   SOL Y LUNA KAWAII (pantalla de carga)
-   ══════════════════════════════════════ */
-
-/* Vaivén vertical suave, como flotando sin gravedad */
-@keyframes kawaiiFloat {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-10px); }
+/* ── Contenedor de decoración cósmica real (planetas fuera del flujo de pantallas) ── */
+.cosmic-decor {
+    position: relative;
+    z-index: 0;
 }
 
-/* Balanceo orgánico de la forma del blob — el borde irregular respira */
-@keyframes kawaiiWobble {
-    0%, 100% { border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%; }
-    50%      { border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%; }
+/* ── Cometas ──
+   El sistema de cometas ya no vive aquí en CSS: se movió por completo a
+   canvas (ver 14-comets.js), porque un cometa realista con polvo
+   disperso y desvaneciéndose es mucho más natural con partículas
+   individuales que con una forma CSS fija (por buena que fuera la cuña
+   anterior, seguía siendo una silueta rígida). El canvas dibuja el
+   núcleo/halo y las partículas de polvo directamente sobre
+   #universe-canvas, en la misma capa que estrellas y nebulosas. */
+
+/* ── Grano + brillo especular reutilizables ──
+   Se aplican como HIJOS reales (no pseudo-elementos) dentro de cualquier
+   esfera de planeta, para poder combinarse con un aro/aura que sí necesita
+   desbordarse del círculo (overflow:hidden en el padre lo recortaría).
+   El propio border-radius:50% en estos elementos ya los limita a la forma
+   circular, así que no hace falta tocar el overflow del contenedor. */
+.planet-grain {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-image: var(--grain-texture);
+    background-size: 100px 100px;
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
-/* Parpadeo ocasional — los ojos se achican brevemente cada ciclo */
-@keyframes kawaiiBlink {
-    0%, 88%, 100% { transform: scaleY(1); }
-    92%           { transform: scaleY(0.15); }
-    96%           { transform: scaleY(1); }
+.planet-highlight {
+    position: absolute;
+    top: 14%;
+    left: 18%;
+    width: 42%;
+    height: 9%;
+    border-radius: 50%;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+    transform: rotate(-20deg);
+    pointer-events: none;
 }
 
-/* ══════════════════════════════════════
-   CIELO: estrellas y planetas
-   ══════════════════════════════════════ */
+/* ── Grupo planeta protagonista + anillo ──
+   Orden en el HTML: anillo (atrás) → planeta → anillo (adelante).
+   El planeta opaco tapa el tramo central del anillo trasero, y la copia
+   delantera se pinta encima del planeta — el anillo "atraviesa" la esfera
+   de verdad, por orden de pintado, sin clip-path ni trucos de recorte.
 
-/* Parpadeo estelar suave */
-@keyframes twinkle {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
+   Nota técnica: el anillo y el planeta usan tamaños en PX explícitos (no %)
+   controlados por dos variables locales (--deco-hero-size / --deco-ring-w /
+   --deco-ring-h) definidas aquí y sobreescritas por breakpoint en
+   13-responsive.css — así cada tamaño es predecible y no depende de cálculos
+   porcentuales anidados que se desalinean entre pantallas. */
+.deco-planet-group {
+    --deco-hero-size: 76px;
+    --deco-ring-w: 260px;
+    --deco-ring-h: 34px;
+
+    position: fixed;
+    width: 132px;
+    height: 92px;
+    bottom: 12%;
+    left: -20px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.9;
+    transform-style: preserve-3d;
+    /* Deriva propia además del giro del planeta: el grupo entero flota y se
+       balancea suavemente (no solo la esfera gira sobre sí misma) — mucho
+       más vivo que quedarse fijo con solo un spin interno. El parallax
+       (04-universe.js) sigue viajando dentro de este mismo transform. */
+    animation: planetGroupDrift 9s ease-in-out infinite;
 }
 
-/* Rotación del planeta (tarjetas) — giro Z continuo (nunca se aplana) + balanceo 3D acotado a ±8°,
-   evita que la esfera se vea "de canto" al pasar por los 90°/270° de una rotación Y completa */
-@keyframes planetSpin {
-    0%   { transform: rotate3d(0.3, 1, 0.15, -8deg) rotate(0deg); }
-    50%  { transform: rotate3d(0.3, 1, 0.15, 8deg) rotate(180deg); }
-    100% { transform: rotate3d(0.3, 1, 0.15, -8deg) rotate(360deg); }
+/* Anillo radar HUD — marca el planeta protagonista como "objeto rastreado"
+   por la consola, girando despacio detrás de él. Deliberadamente discreto
+   (borde punteado fino, sin relleno) para no competir con el anillo real
+   del planeta, que es el elemento con más peso visual del grupo. */
+.deco-radar-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 128px;
+    height: 128px;
+    margin: -64px 0 0 -64px;
+    border-radius: 50%;
+    border: 1px dashed var(--hud-cyan-dim);
+    pointer-events: none;
+    z-index: -2;
+    animation: radarSpin 16s linear infinite;
 }
 
-/* Rotación del planeta de fondo — mismo principio, balanceo más sutil (±6°) por ser más grande y visible.
-   Incluye translateY(var(--parallax-y)) para que 04-universe.js pueda desplazarlo sutilmente
-   al hacer scroll, sin pelear con el giro (la variable cae en 0px si nadie la actualiza). */
-@keyframes planetSpin3d {
-
-    0% {
-        transform:
-            translateY(calc(var(--parallax-y, 0px) + 0px))
-            rotate3d(0.15, 1, 0.05, -6deg)
-            rotate(0deg);
-    }
-
-    25% {
-        transform:
-            translateY(calc(var(--parallax-y, 0px) - 2px))
-            rotate3d(0.15, 1, 0.05, -2deg)
-            rotate(90deg);
-    }
-
-    50% {
-        transform:
-            translateY(calc(var(--parallax-y, 0px) - 5px))
-            rotate3d(0.15, 1, 0.05, 6deg)
-            rotate(180deg);
-    }
-
-    75% {
-        transform:
-            translateY(calc(var(--parallax-y, 0px) - 2px))
-            rotate3d(0.15, 1, 0.05, 2deg)
-            rotate(270deg);
-    }
-
-    100% {
-        transform:
-            translateY(calc(var(--parallax-y, 0px) + 0px))
-            rotate3d(0.15, 1, 0.05, -6deg)
-            rotate(360deg);
-    }
-
-}
-
-/* Variante de planetSpin3d para elementos que se auto-centran con translate(-50%,-50%)
-   (como el planeta azul dentro de .deco-planet-group): sin este keyframe dedicado,
-   la animación infinita sobreescribe el transform en cada fotograma y el centrado
-   se pierde — esa fue la causa real del desalineamiento del anillo.
-   No lleva parallax propio: .deco-planet-group (el padre) ya lo aplica en su
-   propio transform, así que duplicarlo aquí lo movería el doble de la cuenta. */
-@keyframes planetSpin3dCentered {
-
-    0% {
-        transform:
-            translate(-50%, -50%)
-            translateY(0px)
-            rotate3d(0.15,1,0.05,-6deg)
-            rotate(0deg);
-    }
-
-    25% {
-        transform:
-            translate(-50%, -50%)
-            translateY(-2px)
-            rotate3d(0.15,1,0.05,-2deg)
-            rotate(90deg);
-    }
-
-    50% {
-        transform:
-            translate(-50%, -50%)
-            translateY(-5px)
-            rotate3d(0.15,1,0.05,6deg)
-            rotate(180deg);
-    }
-
-    75% {
-        transform:
-            translate(-50%, -50%)
-            translateY(-2px)
-            rotate3d(0.15,1,0.05,2deg)
-            rotate(270deg);
-    }
-
-    100% {
-        transform:
-            translate(-50%, -50%)
-            translateY(0px)
-            rotate3d(0.15,1,0.05,-6deg)
-            rotate(360deg);
-    }
-
-}
-
-/* Deriva flotante del grupo planeta+anillo — conserva la lectura de
-   --parallax-y (actualizada por 04-universe.js al hacer scroll) igual que
-   planetSpin3d, pero le suma un balanceo propio de "flotar en el espacio"
-   (sube/baja + leve giro Z), en vez de quedarse estático salvo por el
-   parallax. Es lo que le da vida al grupo completo, no solo al planeta
-   girando sobre sí mismo. */
-@keyframes planetGroupDrift {
-    0%, 100% {
-        transform:
-            perspective(320px) rotateX(8deg)
-            translateY(calc(var(--parallax-y, 0px) + 0px))
-            rotateZ(0deg);
-    }
-    50% {
-        transform:
-            perspective(320px) rotateX(8deg)
-            translateY(calc(var(--parallax-y, 0px) - 12px))
-            rotateZ(1.6deg);
-    }
-}
-
-/* Aura pulsante detrás del planeta — "respira" en intensidad, el halo
-   mágico típico de objetos celestes en escenas de anime */
-@keyframes planetAuraPulse {
-    0%, 100% {
-        opacity: 0.5;
-        transform: scale(0.94);
-    }
-    50% {
-        opacity: 0.9;
-        transform: scale(1.08);
-    }
-}
-
-/* Destello puntual sobre el anillo — titila y crece/encoge levemente */
-@keyframes ringGlint {
-    0%, 100% {
-        opacity: 0;
-        transform: scale(0.4);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
-
-/* Glow ambiental que "respira" en el planeta ancla (Intro/Propuesta) —
-   solo anima la capa de resplandor externo del box-shadow, el resto se
-   mantiene igual en cada paso para no repetir toda la sombra interna */
-@keyframes planetGlowBreathe {
-    0%, 100% {
-        box-shadow:
-            inset -8px -5px 14px rgba(20, 6, 40, 0.5),
-            inset 4px 4px 8px rgba(220, 190, 255, 0.18),
-            var(--sphere-rim-light),
-            var(--planet-outline-stroke),
-            0 0 16px 1px var(--rim-glow-purple),
-            0 0 28px rgba(150, 90, 220, 0.28);
-    }
-    50% {
-        box-shadow:
-            inset -8px -5px 14px rgba(20, 6, 40, 0.5),
-            inset 4px 4px 8px rgba(220, 190, 255, 0.18),
-            var(--sphere-rim-light),
-            var(--planet-outline-stroke),
-            0 0 26px 4px var(--rim-glow-purple),
-            0 0 42px rgba(150, 90, 220, 0.4);
-    }
-}
-
-/* Flotación suave de la lunita compañera junto al planeta protagonista —
-   vaivén propio e independiente del grupo, para que no se sienta pegada */
-@keyframes companionMoonFloat {
-    0%, 100% {
-        transform: translate(0, 0);
-    }
-    50% {
-        transform: translate(-3px, -6px);
-    }
-}
-
-/* Órbita lunar en pantalla activa */
-/* Luna del sistema ancla viajando sobre la elipse real del anillo
-   (rx≈36px, ry≈7px, tilt -16°) — resuelto en 8 puntos + regreso al inicio,
-   en vez de una órbita circular genérica que no calzaría con el anillo. */
-@keyframes anchorMoonOrbitRing {
-    0%    { transform: translate(34.6px, -9.9px);  z-index: 0; }
-    12.5% { transform: translate(25.8px, -2.3px);  z-index: 0; }
-    25%   { transform: translate(1.9px, 6.7px);    z-index: 2; }
-    37.5% { transform: translate(-23.1px, 11.8px); z-index: 2; }
-    50%   { transform: translate(-34.6px, 9.9px);  z-index: 2; }
-    62.5% { transform: translate(-25.8px, 2.3px);  z-index: 2; }
-    75%   { transform: translate(-1.9px, -6.7px);  z-index: 0; }
-    87.5% { transform: translate(23.1px, -11.8px); z-index: 0; }
-    100%  { transform: translate(34.6px, -9.9px);  z-index: 0; }
-}
-
-/* ══════════════════════════════════════
-   GRAVEDAD CERO: flotación de tarjetas
-   ══════════════════════════════════════ */
-
-@keyframes zeroGravityFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-/* Entradas de pantalla */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-@keyframes scaleUpEffect {
-    from { opacity: 0; transform: scale(0.88); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.scale-up {
-    animation: scaleUpEffect 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* ══════════════════════════════════════
-   LOADING
-   ══════════════════════════════════════ */
-
-@keyframes heartBeatLoading {
-    0% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.4)); }
-    30% { transform: scale(1.2); filter: drop-shadow(0 0 16px rgba(199, 125, 255, 0.6)); }
-    60% { transform: scale(0.95); }
-    100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.4)); }
-}
-
-/* ══════════════════════════════════════
-   INTRO — estilo "hero" (tarjeta flotante inclinada + botón vívido)
-   ══════════════════════════════════════ */
-
-/* Pulso del botón intro — un solo tono de acento, respiración discreta */
-@keyframes simplePulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 4px 20px var(--shadow-glow);
-    }
-    50% {
-        transform: scale(1.02);
-        box-shadow: 0 8px 28px rgba(199, 125, 255, 0.45);
-    }
-}
-
-/* Visor principal del avatar: flotación calmada con una inclinación mínima —
-   elegancia antes que espectáculo */
-@keyframes heroCardTilt {
-    0%, 100% { transform: rotate(-2deg) translateY(0); }
-    50% { transform: rotate(0deg) translateY(-8px); }
-}
-
-/* Halo difuminado detrás del visor: respira suave en opacidad y escala */
-@keyframes heroGlowPulse {
-    0%, 100% { opacity: 0.55; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(1.08); }
-}
-
-/* ══════════════════════════════════════
-   TIMELINE
-   ══════════════════════════════════════ */
-
-/* Flip 3D en ítems del timeline al tocar */
-@keyframes timelineFlip {
-    0% { transform: rotateY(0deg); }
-    50% { transform: rotateY(90deg); }
-    100% { transform: rotateY(0deg); }
-}
-
-/* ══════════════════════════════════════
-   PROPUESTA FINAL
-   ══════════════════════════════════════ */
-
-/* Gatito flotante */
-@keyframes kittyFloatNew {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(2deg); }
-}
-
-.cute-kitty-box {
-    animation: kittyFloatNew 3.5s ease-in-out infinite;
+.deco-planet-group .deco-planet--hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--deco-hero-size);
+    height: var(--deco-hero-size);
+    border-radius: 50%;
+    background: var(--planet-hero);
+    box-shadow:
+        inset -14px -9px 22px rgba(50, 22, 6, 0.45),
+        inset 7px 7px 14px rgba(255, 245, 220, 0.22),
+        var(--sphere-rim-light),
+        var(--planet-outline-stroke),
+        /* Rim light saturado tipo anime — el borde "brilla" en dorado/naranja
+           cálido, a juego con la nueva paleta de Júpiter */
+        0 0 20px 3px var(--rim-glow-hero),
+        0 0 40px rgba(210, 130, 50, 0.32);
+    /* Keyframe "Centered": conserva el translate(-50%,-50%) en cada fotograma
+       (ver nota en 12-animations.css) — el parallax del grupo ya viaja en el
+       padre, así que aquí no hace falta duplicarlo. */
+    animation: planetSpin3dCentered 55s var(--ease-orbit) infinite reverse;
     will-change: transform;
 }
 
-@keyframes roseWiggleNew {
-    0% { transform: rotate(-20deg) scale(0.95); }
-    100% { transform: rotate(15deg) scale(1.1); }
+/* Gran Mancha Roja — la tormenta característica de Júpiter. Óvalo simple
+   con su propio degradado y un ligerísimo blur para que no se vea como un
+   sticker recortado sobre las bandas. */
+.planet-great-spot {
+    position: absolute;
+    top: 56%;
+    left: 20%;
+    width: 28%;
+    height: 17%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 35% 35%, #e8763e 0%, #c9501f 42%, #8a3010 78%, transparent 100%);
+    opacity: 0.88;
+    filter: blur(0.4px);
+    pointer-events: none;
 }
 
-.kitty-rose {
-    animation: roseWiggleNew 1.8s ease-in-out infinite alternate;
+/* Aura pulsante detrás del planeta — "respira" en intensidad, como el
+   halo mágico de un objeto celeste en escenas de anime. Al ser un círculo
+   perfecto y simétrico, girar junto con el planeta (comparten transform)
+   no genera ningún artefacto visual. */
+.deco-planet-group .deco-planet--hero::after {
+    content: '';
+    position: absolute;
+    inset: -45%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--rim-glow-hero) 0%, rgba(210, 130, 50, 0.12) 55%, transparent 75%);
+    animation: planetAuraPulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Capa de glow separada, SIN clip-path — el resplandor de un anillo debe
+   desvanecerse suave alrededor de toda la elipse. Si el glow vive en el
+   mismo elemento que se recorta a la mitad (ver más abajo), el
+   clip-path también corta el box-shadow en línea recta justo en la unión
+   de ambas mitades, y ese desvanecido se ve truncado de golpe — el
+   "borde cuadrado" raro que se notaba antes. Separarlo en su propio
+   elemento, siempre completo y detrás de todo, resuelve esto. */
+.deco-ring-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--deco-ring-w);
+    height: var(--deco-ring-h);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-16deg);
+    box-shadow:
+        0 0 16px rgba(220, 140, 60, 0.4),
+        0 0 32px rgba(190, 100, 40, 0.25);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Anillo de asteroides — antes era border+border-radius sobre una elipse
+   muy aplanada (260x34px con 9px de borde): a esa proporción, el
+   border-radius:50% redondea tanto las puntas izquierda/derecha que se ven
+   como un bulto esférico pegado al anillo (parecía una "luna" extra mal
+   puesta, pero era geometría de CSS, no un elemento real). Ahora el
+   "hueco" y las bandas se resuelven con un solo radial-gradient (ellipse)
+   de transparencias alternadas — sin filter:blur pesado, sin border — así
+   la forma es una elipse limpia a cualquier proporción, y de paso se
+   pueden apilar varias bandas concéntricas para el look "asteroides
+   detallado" (divisiones tipo Cassini, tonos alternados óxido/dorado). */
+.deco-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--deco-ring-w);
+    height: var(--deco-ring-h);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+        transparent 0%, transparent 46%,
+        rgba(70, 35, 12, 0.5) 47%, rgba(70, 35, 12, 0.5) 50%,
+        rgba(230, 160, 90, 0.9) 52%, rgba(255, 210, 145, 0.95) 57%, rgba(230, 160, 90, 0.9) 61%,
+        rgba(70, 35, 12, 0.45) 63%, rgba(70, 35, 12, 0.45) 66%,
+        rgba(210, 130, 60, 0.75) 69%, rgba(240, 180, 110, 0.85) 74%, rgba(210, 130, 60, 0.75) 78%,
+        rgba(70, 35, 12, 0.35) 80%, rgba(70, 35, 12, 0.35) 82%,
+        rgba(200, 120, 55, 0.5) 86%,
+        transparent 93%, transparent 100%);
+    transform: translate(-50%, -50%) rotate(-16deg);
+}
+
+/* Antes .deco-ring--back/--front eran DOS COPIAS COMPLETAS de la misma
+   elipse (una detrás del planeta, otra encima) — la copia "delantera" al
+   ser una elipse entera, en realidad tapaba el planeta por completo, no
+   solo la mitad que debía pasar por delante. El recorte real pasaba
+   desapercibido nada más porque el planeta ya ocultaba el tramo central
+   de la copia trasera; la delantera nunca se "escondía" de verdad detrás
+   de la esfera en el lado opuesto.
+
+   Ahora cada copia se recorta a SU mitad real con clip-path (en el
+   espacio local de la elipse, antes de aplicar el rotate — así el corte
+   queda alineado con el eje mayor de la elipse ya inclinada, igual que el
+   split por ángulo que usa el agujero negro en canvas). El punto de
+   encuentro de ambas mitades cae justo en los extremos izquierdo y
+   derecho de la elipse, que es donde el anillo "entra" y "sale" del
+   contorno del planeta — el mismo principio, solo que aquí en CSS puro
+   en vez de un arco de canvas. */
+.deco-ring--back {
+    opacity: 0.6;
+    clip-path: inset(0 0 50% 0); /* mitad lejana: pasa detrás del planeta */
+}
+
+.deco-ring--front {
+    opacity: 1;
+    clip-path: inset(50% 0 0 0); /* mitad cercana: pasa por delante */
+}
+
+/* Un par de destellos puntuales sobre el anillo delantero — el típico
+   "brillito" mágico anime, no busca ser matemáticamente exacto sobre la
+   elipse, solo dar vida al anillo con un par de chispas que titilan.
+   Reubicados dentro del 50%–100% (la mitad inferior, que es la única
+   visible ahora que el anillo delantero está recortado con clip-path). */
+.deco-ring--front::before,
+.deco-ring--front::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.85);
+    animation: ringGlint 2.6s ease-in-out infinite;
+}
+
+.deco-ring--front::before {
+    top: 62%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.deco-ring--front::after {
+    top: 58%;
+    right: 16%;
+    animation-delay: 1.3s;
+}
+
+/* Lunita compañera flotando cerca del planeta protagonista — el detalle
+   de "no está solo en el encuadre" que se ve en la referencia (un cuerpo
+   pequeño adicional, no solo el planeta con su anillo). Flota con su
+   propio vaivén, independiente del grupo. */
+.deco-companion-moon {
+    position: absolute;
+    top: 6%;
+    right: 4%;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--moon-surface);
+    box-shadow:
+        inset -2px -1px 4px rgba(0, 0, 0, 0.3),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.3),
+        var(--sphere-rim-light),
+        0 0 8px rgba(255, 255, 255, 0.25);
+    animation: companionMoonFloat 6s ease-in-out infinite;
     will-change: transform;
 }
 
-/* ══════════════════════════════════════
-   COMETAS
-   ══════════════════════════════════════
-   El movimiento del cometa (curva, escala, fundido) ya no se anima con
-   @keyframes de CSS — se calcula por frame en 14-comets.js usando una
-   curva Catmull-Rom sobre varios waypoints, lo que permite además emitir
-   partículas de polvo en tiempo real a lo largo del recorrido (algo que
-   una animación CSS declarativa no puede hacer). */
+/* ── Mini-slime cósmico (Intro / Propuesta) ──
+   Reemplaza por completo al planeta ancla anterior (ya no es un planeta
+   con anillo — es un personaje: esfera oscura con remolino en la cara,
+   ojitos, boquita "w" y un aura multicolor tipo llama detrás, con
+   movimiento propio y micro-expresiones. Visibilidad igual que antes:
+   :has() muestra el grupo solo en Intro/Propuesta, sin JS. */
+.slime-group {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 6%;
+    width: 90px;
+    height: 90px;
+    z-index: 3;
+    pointer-events: none;
+    animation: planetGroupDrift 9s ease-in-out infinite;
+}
 
-/* NOTA: se removieron los keyframes "nebulaFloatPurple" y "nebulaFloatBlue" —
-   pertenecían a las nebulosas CSS (.cosmic-nebula) eliminadas en 05-universe.css
-   por causar artefactos de bloques/manchas (filter: blur pesado mal soportado). */
+body:has(#screen-intro.active) .slime-group,
+body:has(#screen-proposal.active) .slime-group {
+    display: block;
+}
+
+/* Aura tipo llama — 3 capas con forma de estrella/llama (clip-path),
+   cada una en un tono distinto (amarillo-verdoso, turquesa, rosa) y con
+   su propio pulso/balanceo independiente — así el aura entera se siente
+   viva en vez de un halo estático detrás del personaje. */
+.slime-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    clip-path: polygon(
+        50% 0%, 60% 15%, 75% 8%, 78% 25%, 92% 20%, 88% 38%, 100% 45%,
+        85% 55%, 92% 68%, 75% 65%, 70% 82%, 55% 75%, 50% 95%, 40% 78%,
+        25% 88%, 28% 68%, 10% 72%, 18% 55%, 2% 48%, 15% 38%, 8% 22%,
+        25% 28%, 30% 10%, 42% 18%
+    );
+    z-index: -1;
+    pointer-events: none;
+}
+
+.slime-aura--outer {
+    background: linear-gradient(200deg, #dff05a 0%, #5be0c0 55%, #ec5aa8 100%);
+    opacity: 0.55;
+    filter: blur(0.5px);
+    animation: slimeAuraPulse 3.4s ease-in-out infinite;
+}
+
+.slime-aura--mid {
+    width: 70px;
+    height: 70px;
+    margin: -35px 0 0 -35px;
+    background: linear-gradient(200deg, #eaf27a 0%, #6be8cf 55%, #f27ab8 100%);
+    opacity: 0.65;
+    animation: slimeAuraPulse 3.4s ease-in-out infinite reverse;
+    animation-delay: 0.3s;
+}
+
+.slime-aura--inner {
+    width: 58px;
+    height: 58px;
+    margin: -29px 0 0 -29px;
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.5) 0%, rgba(120, 230, 210, 0.4) 45%, rgba(240, 130, 190, 0.3) 100%);
+    opacity: 0.8;
+    animation: slimeAuraPulse 2.8s ease-in-out infinite;
+    animation-delay: 0.15s;
+}
+
+/* Cuerpo del slime: esfera oscura con un leve tinte azul/púrpura,
+   estrellitas diminutas dentro (como un pedacito de cielo nocturno) y
+   brillo glossy — no un negro plano. */
+.slime-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.22) 0%, transparent 8%),
+        radial-gradient(circle at 62% 70%, rgba(120, 90, 200, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 34% 60%, #171226 0%, #0a0714 55%, #030208 100%);
+    box-shadow:
+        inset -6px -4px 10px rgba(0, 0, 0, 0.6),
+        inset 4px 4px 8px rgba(180, 150, 255, 0.12),
+        0 0 14px rgba(150, 220, 200, 0.35),
+        0 0 26px rgba(240, 130, 190, 0.22);
+    overflow: hidden;
+    animation: planetSpin3dCentered 40s var(--ease-orbit) infinite;
+}
+
+.slime-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 3px #fff;
+}
+
+.slime-star--1 { top: 20%; left: 68%; width: 2px; height: 2px; }
+.slime-star--2 { top: 62%; left: 74%; width: 1.5px; height: 1.5px; }
+.slime-star--3 { top: 32%; left: 40%; width: 1.5px; height: 1.5px; }
+
+/* Remolino en la cara — SVG propio (no reproduce ningún personaje
+   existente), gira despacio para sentirse "vivo" en vez de un dibujo fijo */
+.slime-swirl {
+    position: absolute;
+    top: 18%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2040%2040'%3E%3Cpath%20d%3D'M21.50%2C20.00%20L21.73%2C20.62%20L21.68%2C21.39%20L21.28%2C22.16%20L20.53%2C22.80%20L19.50%2C23.15%20L18.30%2C23.09%20L17.10%2C22.55%20L16.09%2C21.55%20L15.46%2C20.14%20L15.36%2C18.49%20L15.88%2C16.81%20L17.03%2C15.31%20L18.72%2C14.25%20L20.78%2C13.82%20L22.98%2C14.15%20L25.03%2C15.28%20L26.64%2C17.13%20L27.56%2C19.52%20L27.60%2C22.21%20L26.67%2C24.85%20L24.83%2C27.10%20L22.22%2C28.64%20L19.13%2C29.22%20L15.91%2C28.69%20L12.97%2C27.03%20L10.70%2C24.37%20L9.43%2C21.00%20L9.39%2C17.28%20L10.66%2C13.66%20L13.17%2C10.60%20L16.66%2C8.51%20L20.77%2C7.72%20L25.02%2C8.40%20L28.88%2C10.54%20L31.86%2C13.96%20L33.54%2C18.29%20L33.65%2C23.05%20L32.09%2C27.68%20L28.99%2C31.59%20L24.64%2C34.27'%20stroke%3D'white'%20stroke-width%3D'2.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));
+    animation: slimeSwirlSpin 12s linear infinite;
+}
+
+/* Ojitos tipo gota (teardrop): border-radius asimétrico + rotación */
+.slime-eye {
+    position: absolute;
+    top: 56%;
+    width: 20%;
+    height: 26%;
+    background: linear-gradient(160deg, #ffffff 0%, #dfe6f5 70%, #b9c3e0 100%);
+    border-radius: 55% 55% 55% 5%;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+    animation: slimeBlink 5s ease-in-out infinite;
+}
+
+.slime-eye--left {
+    left: 24%;
+    transform: rotate(-25deg);
+    transform-origin: bottom center;
+}
+
+.slime-eye--right {
+    left: 54%;
+    transform: rotate(25deg) scaleX(-1);
+    transform-origin: bottom center;
+}
+
+/* Boquita "w" — carácter simple, no una forma dibujada a mano; se anima
+   con un leve estiramiento para simular micro-expresiones (respira/habla) */
+.slime-mouth {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-mono);
+    animation: slimeMouthTalk 3.6s ease-in-out infinite;
+}
+
+.slime-mouth::after {
+    content: 'w';
+}
+
+/* ── Canvas del universo interactivo (estrellas + partículas dibujadas en JS) ── */
+#universe-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* ==========================================================
+   NOTA: se removieron por completo ".deco-planet--pink" y las nebulosas
+   CSS (".cosmic-nebula", ".nebula-purple", ".nebula-blue"), junto con la
+   regla inválida "body::marker" (::marker no aplica a <body>, era código
+   muerto).
+
+   Motivo: ".nebula-purple"/".nebula-blue" aplicaban filter: blur(90px)
+   sobre círculos de 650px/550px. Ese nivel de blur es muy costoso, y en
+   motores de renderizado con soporte limitado de "filter" (wallpaper
+   engines, GPUs de gama baja, vistas en segundo plano) el navegador no
+   logra suavizar el degradado y lo pinta como bloques/manchas — el
+   patrón de "blobs" que se veía en pantalla. El planeta rosa se quitó
+   junto con ellas por la misma petición de limpieza visual.
+
+   El equivalente ambiental (nebulosas de fondo, tono púrpura/azul) sigue
+   presente de forma más barata vía "--cosmic-bg" en 02-variables.css y
+   los gradientes de 03-global.css / body, sin necesitar filter:blur.
+========================================================== */

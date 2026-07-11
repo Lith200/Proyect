@@ -5,7 +5,7 @@
    ========================================================== */
 
 (() => {
-    const letterText = `Hola mi amor... 🌸\n\nQuería prepararte algo diferente, algo único, tal y como lo eres tú para mí. Desde que llegaste a mi vida, cada momento se ha vuelto más brillante, más feliz y lleno de un cariño que no para de crecer.\n\nEsta pequeña sorpresa es un recorrido por lo que somos, por las risas compartidas y las promesas que guardo en el corazón.\n\nGracias por ser mi lugar seguro, mi sonrisa diaria y mi persona favorita en el mundo entero. Esto es apenas un pedacito de todo lo que significas para mí... ✨`;
+    const letterText = `Hola Seños... 🌸\n\nQuería prepararle algo ditinto, algo especial y unico, algo memorable, lamento haber tardado tanto tiempo.\n\nEste es un regalo para ti y solo para ti, este proyecto signifca lo que yo siento por usted, realmente siento que debi de darme cuenta antes, siento que debi ser yo quien hiciera la pregunta desde un inicio\n\nNo se en que punto empece a experimentar este sentimiento hacia ti y tenia que plasmarlo en algo y aqui esta todo lo que siento por usted`;
 
     let isLetterTyping = false;
 
